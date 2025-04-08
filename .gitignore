@@ -1,0 +1,20 @@
+# Ignore all of CMS_JmlaMain/mysql_data
+CMS_JmlaMain/mysql_data/
+
+# Maven build files
+**/target/
+**/.mvn/
+**/mvnw
+**/mvnw.cmd
+
+# Node modules
+**/node_modules/
+**/dist/
+
+# Environment files
+**/.env
+**/*.env
+
+# System files
+.DS_Store
+Thumbs.db

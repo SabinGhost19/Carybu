@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>chat interface</title>
+    <base href="/" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, minimum-scale=1.0"
+    />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      // polyfill for global variable used by sockjs
+      window.global = window;
+    </script>
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+      }
+      .loading-message {
+        display: block;
+        text-align: center;
+        padding-top: 100px;
+        font-size: 24px;
+        color: #333;
+      }
+      app-root:empty + .loading-message {
+        display: block;
+      }
+      app-root:not(:empty) + .loading-message {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>
+      <h2>Sorry! Your browser doesn't support Javascript</h2>
+    </noscript>
+    <app-root></app-root>
+    <div class="loading-message">
+      loading application... if this message doesn't disappear, check the
+      browser console for errors.
+    </div>
+  </body>
+</html>

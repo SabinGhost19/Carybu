@@ -1,0 +1,742 @@
+/**
+ * [Copyright Regular Labs]
+ */
+
+@import "_variables";
+@import "_icons";
+
+/*
+ * Regular Labs specific styles
+ */
+
+.rl-flex {
+    display: flex;
+
+    .rl-flex > {
+        flex: 1;
+    }
+}
+
+.rl-mr-1 {
+    margin-right: 0.25rem;
+}
+
+@mixin rl-w($width: "", $postfix: "") {
+    .rl-w-#{$width},
+    .input-group.rl-w-#{$width},
+    .form-control.rl-w-#{$width},
+    .input-group > .form-control.rl-w-#{$width} {
+        max-width: 100%;
+        width:     #{$width}#{$postfix};
+    }
+    .rl-min-w-#{$width} {
+        min-width: #{$width}#{$postfix};
+    }
+}
+
+@include rl-w(2em);
+@include rl-w(3em);
+@include rl-w(4em);
+@include rl-w(5em);
+@include rl-w(6em);
+@include rl-w(7em);
+@include rl-w(8em);
+@include rl-w(9em);
+@include rl-w(10em);
+@include rl-w(12em);
+@include rl-w(16em);
+@include rl-w(20em);
+@include rl-w(24em);
+
+@each $color in gray, red, orange, yellow, green, teal, blue, purple, pink {
+    .rl-#{$color} {
+        color: rl-color($color, 600);
+    }
+    .rl-bg-#{$color} {
+        background-color: rl-color($color, 500);
+    }
+    .rl-border-#{$color} {
+        border-color: rl-color($color, 500);
+    }
+}
+
+.rl-license,
+.rl-footer {
+    margin-top: 30px;
+    text-align: center;
+
+    div {
+        margin-top: .5em;
+    }
+
+    a,
+    a[target=_blank] {
+        &:before {
+            content:      "";
+            margin-right: 0;
+        }
+    }
+}
+
+.rl-footer {
+    .rl-footer-review {
+        a.stars {
+            display: inline-block;
+
+            .icon-star {
+                color:               $yellow;
+                margin:              0;
+                transition-duration: 500ms;
+            }
+
+            &:hover {
+                text-decoration: none;
+
+                .icon-star {
+                    transform: rotate(216deg);
+                }
+            }
+        }
+    }
+
+    .rl-footer-copyright {
+        font-size:  0.7em;
+        margin-top: 3px;
+        opacity:    .6;
+    }
+}
+
+.rl-code {
+    background-color: var(--template-bg-dark-3);
+    border:           1px solid var(--template-bg-dark-10);
+    border-radius:    .25rem;
+    color:            var(--alert-success);
+    font-family:      $font-family-monospace;
+    font-size:        .875rem;
+    font-weight:      400;
+    line-height:      1.5;
+    vertical-align:   baseline;
+    white-space:      nowrap;
+    display:          inline-block;
+    padding:          .1rem .1rem;
+
+    &.rl-code-block {
+        max-width:  100%;
+        padding:    .25rem .5rem;
+        overflow-x: auto;
+    }
+}
+
+.rl-pre-wrap {
+    white-space: pre-wrap;
+}
+
+.rl-form {
+    //.control-group {
+    //    .form-select {
+    //        padding-right: 0;
+    //    }
+    //}
+
+    .form-control {
+        padding: 0.5rem;
+    }
+
+    select.form-control {
+        padding: 0;
+
+        option {
+            padding: 0.25rem 0.5rem;
+        }
+    }
+
+    .options-form {
+        legend {
+            margin-bottom: 0.25rem;
+        }
+    }
+
+    &.labels-sm {
+        .control-label {
+            width: 150px;
+        }
+    }
+
+    .is-flipped.is-open .choices__inner {
+        border-radius: 2.5px 2.5px 0 0;
+    }
+
+    .is-flipped .choices__list--dropdown {
+        top:           100%;
+        bottom:        auto;
+        margin-top:    -1px;
+        margin-bottom: 0;
+        border-radius: 0 0 2.5px 2.5px;
+    }
+}
+
+a.rl-no-styling {
+    text-decoration: none !important;
+
+    &:before {
+        content:             "" !important;
+        -webkit-padding-end: 0 !important;
+        padding-inline-end:  0 !important;
+    }
+}
+
+input.rl-code-field {
+    &.form-control {
+        font-family: $font-family-monospace;
+
+        &.inactive {
+            font-weight:      700;
+            color:            $gray-600;
+            background-color: $gray-100;
+            border-color:     $gray-200;
+        }
+
+        &::-webkit-input-placeholder {
+            opacity: 1;
+            color:   $gray-400;
+        }
+
+        &:-ms-input-placeholder {
+            opacity: 1;
+            color:   $gray-400;
+        }
+
+        ::placeholder {
+            opacity: 1;
+            color:   $gray-400;
+        }
+    }
+}
+
+input.rl-key-field {
+    &.form-control {
+        font-family: $font-family-monospace;
+    }
+}
+
+.rl-admin-popover-container {
+    display:  none;
+    position: relative;
+
+    &.show {
+        display: block;
+    }
+
+    &.rl-admin-popover-full {
+        position: absolute;
+        left:     0;
+        right:    0;
+    }
+}
+
+.rl-admin-popover {
+    background:    $white;
+    border:        1px solid $gray-500;
+    border-radius: 0.3rem;
+    box-shadow:    0 0 40px 10px rgba(0, 28, 73, .15);
+    color:         $gray-800;
+
+    font-size:     1rem;
+    left:          0;
+
+    margin:        .25em;
+
+    max-width:     100%;
+    padding:       0.5rem 1rem;
+    position:      absolute;
+
+    top:           0;
+    z-index:       1060;
+
+    .form-vertical & {
+        margin-top: -.25em;
+    }
+}
+
+.rl-panel {
+    border:            1px solid $info-bg;
+    border-left-width: .6rem;
+    border-radius:     .3rem;
+    margin:            1rem 0;
+    padding:           1rem;
+
+    &:first-child {
+        margin-top: 0;
+    }
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    &.rl-panel-success {
+        border-color: $success-bg;
+    }
+
+    &.rl-panel-warning {
+        border-color: $warning-bg;
+    }
+
+    &.rl-panel-error {
+        border-color: $danger-bg;
+    }
+}
+
+.rl-alert.alert {
+    &.alert-info {
+        background-color: $blue;
+        border:           1px solid $blue;
+        color:            $white;
+    }
+
+    &.rl-alert-light {
+        &.alert-info {
+            background-color: lighten($blue, 50%);
+            border:           2px solid $blue;
+            color:            $black;
+        }
+
+        &.alert-success {
+            background-color: lighten($green, 60%);
+            border:           2px solid $green;
+            color:            $black;
+        }
+
+        &.alert-warning {
+            background-color: lighten($yellow, 43%);
+            border:           2px solid $yellow;
+            color:            $black;
+        }
+
+        &.alert-error {
+            background-color: lighten($red, 50%);
+            border:           2px solid $red;
+            color:            $black;
+        }
+    }
+}
+
+.rl-badge.badge {
+    padding-right: 0.25rem;
+    padding-left:  0.25rem;
+
+    &.bg-info {
+        background-color: $blue !important;
+        color:            $white;
+    }
+
+    &.bg-warning {
+        background-color: $yellow !important;
+        color:            $white;
+    }
+}
+
+.rl-treeselect {
+    &.card {
+        border: solid 1px var(--template-bg-dark-20);
+    }
+
+    .card-header {
+        border-bottom: solid 1px var(--template-bg-dark-20);
+    }
+
+    .card-body {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .treeselect {
+        margin-bottom: 0;
+
+        .dropdown-toggle::after {
+            font-size:      1.1rem;
+            vertical-align: middle;
+        }
+    }
+
+    .dropdown-header {
+        border-bottom:  1px solid rgba(0, 0, 0, 0.15);
+        padding:        .75rem;
+        text-transform: uppercase;
+    }
+
+    .dropdown-item {
+        border-bottom: none;
+        line-height:   1rem;
+        padding:       .75rem;
+    }
+
+    .rl-item-checked > .treeselect-item {
+        margin:           0 -.25rem;
+        padding:          0 .25rem;
+        background-color: rl-color(blue, 200);
+        border-radius:    0.25rem;
+    }
+}
+
+.rl-btn-group.btn-group {
+    &.radio > .btn-check {
+        + .btn {
+            opacity: 0.5;
+        }
+
+        + .btn:hover,
+        &:checked + .btn {
+            opacity: 1;
+        }
+
+        &[disabled] + .btn,
+        &:disabled + .btn {
+            background-color: $gray-300;
+            opacity:          0.4;
+        }
+    }
+
+    &.rl-btn-group-separate {
+        display: block;
+
+        > .btn {
+            border-radius: 0.2rem !important;
+            margin-bottom: 0.25rem;
+        }
+
+        &.radio > .btn-check {
+            + .btn {
+                opacity: 0.7;
+            }
+
+            + .btn:hover,
+            &:checked + .btn {
+                opacity: 1;
+            }
+
+            &[disabled] + .btn,
+            &:disabled + .btn {
+                opacity: 0.4;
+            }
+        }
+
+        &.rl-btn-group-min-size {
+            > .btn {
+                min-width: 4rem;
+            }
+        }
+    }
+}
+
+.rl-bg-transparent {
+    background: none !important;
+}
+
+tr.rl-tr-bg-transparent {
+    .table > * > & > * {
+        background: none !important;
+        border:     none !important;
+        box-shadow: none !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .rl-w-md-25 {
+        width: 25%;
+    }
+    .rl-w-md-30 {
+        width: 30%;
+    }
+}
+
+//tr.rl-tr-title {
+//    .table > * > & > * {
+//        padding: 4rem .5rem .5rem;
+//    }
+//
+//    .table > *:first-child > &:first-child > * {
+//        padding-top: 0;
+//    }
+//}
+
+.rl-badge {
+    > small {
+        font-size: .85em;
+    }
+}
+
+.rl-modal .btn-group > .btn {
+    line-height: 1.5;
+    margin:      0;
+    padding:     0.6rem 1rem;
+}
+
+.control-group > div > .rl-alert {
+    &:first-child {
+        margin-top: 0;
+    }
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.rl-form-checkboxes-not-inline .form-check-inline,
+.rl-form-check-not-inline .form-check-inline {
+    display: block;
+}
+
+.rl-form-checkboxes-style-disabled .rl-checkbox-checked label {
+    color: $red;
+}
+
+.rl-button-no-text {
+    &.header-item-content {
+        -webkit-padding-end: 0;
+        padding-inline-end:  0;
+    }
+
+    .subhead joomla-toolbar-button &.btn > span {
+        -webkit-margin-end: 0;
+        margin-inline-end:  0;
+    }
+}
+
+.card.rl-card {
+    border: solid 1px var(--template-bg-dark-20);
+    margin: 1rem 0;
+
+    &,
+    .card-body > *,
+    .alert > * {
+        &:first-child {
+            margin-top: 0;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .card-body:not(:first-child) {
+        padding-top: 0;
+    }
+
+    .rl-card-button {
+        order:                1;
+        -webkit-margin-start: auto;
+        margin-inline-start:  auto;
+
+        > * {
+            margin-top: -10px;
+        }
+    }
+}
+
+.rl-spinner {
+    position:            absolute;
+    animation:           rl-spinner 1.2s infinite linear;
+    border:              3px solid $rl-gray;
+    border-top-color:    $rl-green;
+    border-right-color:  $rl-yellow;
+    border-bottom-color: $rl-red;
+    border-left-color:   $rl-blue;
+    border-radius:       50%;
+    margin:              0 auto;
+    left:                0;
+    right:               0;
+    height:              18px;
+    width:               18px;
+    top:                 calc(50% - 9px);
+
+    &.rl-spinner-lg {
+        border-width: 4px;
+        height:       24px;
+        width:        24px;
+        top:          calc(50% - 12px);
+    }
+}
+
+.rl-has-spinner {
+    min-height: 24px;
+}
+
+@keyframes rl-spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/*
+ * Global extra styles
+ */
+
+.btn-md, .btn-group-md > .btn {
+    font-size: 0.9rem;
+    padding:   0.3rem 0.6rem;
+}
+
+joomla-field-subform.rl-subform {
+    &.rl-hide-main-buttons > .btn-toolbar {
+        display: none;
+    }
+
+    &.rl-move-add-button div.subform-repeatable-group {
+        margin-bottom: 4rem;
+
+        &:last-child {
+            margin-bottom: 3rem;
+        }
+
+        > .btn-toolbar .btn.group-add {
+            right:         auto;
+            left:          0;
+            bottom:        -3rem;
+            border-radius: 0.25rem;
+            min-width:     6rem;
+        }
+    }
+
+    .subform-repeatable-group {
+        margin-left: 1rem;
+    }
+}
+
+.rl-cursor-not-allowed {
+    cursor: not-allowed;
+}
+
+.rl-bg-danger-light {
+    background-color: $state-danger-bg;
+}
+
+button, [type=button], [type=reset], [type=submit] {
+    &.rl-webkit-no-appearance {
+        -webkit-appearance: none;
+    }
+}
+
+.form-select {
+    &.rl-form-select-info {
+        color:            var(--info);
+        background-color: var(--info);
+        border-color:     var(--info);
+
+        option {
+            color:            $gray-900;
+            background-color: var(--white-offset);
+        }
+    }
+
+    &.rl-form-select-ghosted {
+        color: $gray-500;
+
+        option {
+            color: $gray-500;
+        }
+    }
+}
+
+/*
+ * Joomla core style overrides
+ */
+
+// Makes label be full width when using form-vertical for instance
+.control-group > div {
+    width: 100%;
+}
+
+.form-vertical .control-group .control-label {
+    width: auto;
+}
+
+.control-group .form-select {
+    padding-right: 3.5rem;
+}
+
+joomla-field-subform .icon-info-circle {
+    color:     var(--template-text-dark) !important;
+    font-size: 0.8571rem !important;
+    opacity:   0.7;
+}
+
+.text-left,
+.btn.text-left {
+    text-align: left;
+}
+
+.text-right,
+.btn.text-right {
+    text-align: right;
+}
+
+.js-stools-column-order > .icon-sort:first-child {
+    margin-left: 0 !important;
+}
+
+.display-block:not(.hidden) {
+    display: block;
+}
+
+.alert-danger code {
+    color: $blue;
+}
+
+.CodeMirror-fullscreen {
+    z-index: 1060 !important;
+}
+
+a.disabled {
+    pointer-events: none;
+    opacity:        0.4;
+}
+
+.disabled {
+    .btn.disabled,
+    a.disabled {
+        opacity: 1;
+    }
+}
+
+.rl-ajax-wrapper {
+    > *:first-child {
+        opacity: 0;
+    }
+
+    &:has(.rl-ajax-field) {
+        display: flex;
+    }
+
+    > .rl-ajax-field {
+        opacity: 0;
+        width:   100%;
+        padding: 9px 1.25rem !important;
+    }
+
+    &.loaded {
+        > *:first-child {
+            opacity: 1;
+        }
+
+        > .rl-ajax-field {
+            opacity:   0;
+            animation: rl-fade-in .5s 3s 1 forwards;
+        }
+    }
+}
+
+.switcher input ~ input:checked.rl-radio-warning ~ .toggle-outside {
+    background-color: $warning;
+}
+
+@keyframes rl-fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

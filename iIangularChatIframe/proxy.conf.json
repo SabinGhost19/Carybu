@@ -1,0 +1,22 @@
+{
+  "/ws": {
+    "target": "http://localhost:8080",
+    "ws": true
+  },
+  "/app": {
+    "target": "http://localhost:8080",
+    "ws": true
+  },
+  "/topic": {
+    "target": "http://localhost:8080",
+    "ws": true
+  },
+  "/history": {
+    "target": "http://localhost:8080",
+    "secure": false
+  },
+  "/chat/history": {
+    "target": "http://localhost:8080",
+    "secure": false
+  }
+}

@@ -1,0 +1,150 @@
+#chat-page {
+  position: relative;
+  height: 100vh;
+}
+
+.chat-container {
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: #fff;
+  box-shadow: 0 1px 11px rgba(0, 0, 0, 0.27);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-header {
+  text-align: center;
+  padding: 15px;
+  border-bottom: 1px solid #ececec;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-header h2 {
+  margin: 0;
+  font-weight: 500;
+}
+
+.connection-status {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  background-color: #ff4444;
+  color: white;
+}
+
+.connection-status.connected {
+  background-color: #00c851;
+}
+
+.messages-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.loading-messages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.chat-message {
+  padding: 10px;
+  position: relative;
+}
+
+.chat-message i {
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  overflow: hidden;
+  left: 10px;
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 18px;
+  line-height: 42px;
+  color: #fff;
+  text-align: center;
+  border-radius: 50%;
+  font-style: normal;
+  text-transform: uppercase;
+}
+
+.chat-message span {
+  color: #333;
+  font-weight: 600;
+  margin-left: 52px;
+  display: block;
+}
+
+.chat-message p {
+  color: #43464b;
+  margin-left: 52px;
+  margin-top: 5px;
+  margin-bottom: 0px;
+}
+
+.event-message {
+  text-align: center;
+  padding: 10px;
+  color: #777;
+}
+
+.event-message p {
+  margin: 5px 0;
+}
+
+.input-container {
+  display: flex;
+  border-top: 1px solid #eee;
+}
+
+.input-container input {
+  flex-grow: 1;
+  border: none;
+  padding: 15px;
+  font-size: 16px;
+}
+
+.input-container button {
+  border: none;
+  padding: 15px 40px;
+  cursor: pointer;
+  color: white;
+  font-size: 16px;
+  background-color: #2196f3;
+}
+
+.input-container button:hover {
+  background-color: #0b7dda;
+}
+
+.input-container button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}

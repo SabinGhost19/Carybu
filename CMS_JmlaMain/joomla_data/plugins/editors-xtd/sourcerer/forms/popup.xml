@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config addfieldprefix="RegularLabs\Library\Form\Field">
+  <fieldset name="code">
+    <field name="@code" type="Note" class="rl-alert alert alert-info rl-alert-light" text="SRC_CODE_DESC"/>
+    <field name="@code__a" type="Block" start="1" label="SRC_CODE"/>
+    <field name="code" type="Editor" editor="codemirror" syntax="php" label=""/>
+    <field name="@code__b" type="Block" end="1"/>
+  </fieldset>
+  <fieldset name="css">
+    <field name="@css_file__a" type="Block" start="1" label="SRC_FILE"/>
+    <field name="@css_file" type="Note" text="SRC_CSS_FILE_DESC"/>
+    <field name="@note__css_file" type="OnlyPro" label=""/>
+    <field name="@css_file__b" type="Block" end="1"/>
+    <field name="@css_code__a" type="Block" start="1" label="SRC_CODE"/>
+    <field name="@css_code" type="Note" text="SRC_CSS_CODE_DESC"/>
+    <field name="@note__css_code" type="OnlyPro" label=""/>
+    <field name="@css_code__b" type="Block" end="1"/>
+  </fieldset>
+  <fieldset name="js">
+    <field name="@js_file__a" type="Block" start="1" label="SRC_FILE"/>
+    <field name="@js_file" type="Note" text="SRC_JS_FILE_DESC"/>
+    <field name="@note__js_file" type="OnlyPro" label=""/>
+    <field name="@js_file__b" type="Block" end="1"/>
+    <field name="@js_code__a" type="Block" start="1" label="SRC_CODE"/>
+    <field name="@note__js_code" type="OnlyPro" label=""/>
+    <field name="@js_code__b" type="Block" end="1"/>
+  </fieldset>
+  <fieldset name="php">
+    <field name="@php_file__a" type="Block" start="1" label="SRC_FILE"/>
+    <field name="@note__php_file" type="OnlyPro" label=""/>
+    <field name="@php_file__b" type="Block" end="1"/>
+    <field name="@php_code__a" type="Block" start="1" label="SRC_CODE"/>
+    <field name="@php_code" type="Note" text="SRC_PHP_CODE_DESC"/>
+    <field name="@note__php_code" type="OnlyPro" label=""/>
+    <field name="@php_code__b" type="Block" end="1"/>
+  </fieldset>
+  <fieldset name="settings">
+    <field name="trim" type="Radio" default="0" class="btn-group rl-btn-group btn-group-md btn-group-yesno" label="SRC_TRIM" description="SRC_TRIM_DESC">
+      <option value="0">JNO</option>
+      <option value="1">JYES</option>
+    </field>
+    <field name="raw" type="Radio" default="0" class="btn-group rl-btn-group btn-group-md btn-group-yesno" label="SRC_RAW" description="SRC_RAW_DESC">
+      <option value="0">JNO</option>
+      <option value="1">JYES</option>
+    </field>
+  </fieldset>
+</config>

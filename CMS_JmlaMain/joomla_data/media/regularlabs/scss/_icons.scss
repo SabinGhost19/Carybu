@@ -1,0 +1,42 @@
+@import "../../vendor/fontawesome-free/scss/variables";
+@import "../../vendor/fontawesome-free/scss/mixins";
+
+.icon-reglab {
+    background-color:        #000000;
+    display:                 inline-block;
+    -webkit-font-smoothing:  antialiased;
+    font-style:              normal;
+    font-variant:            normal;
+    font-weight:             normal;
+    height:                  1em;
+    -webkit-mask-image:      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='100 100 760 760'%3E%3Cpath d='M444.22,100.12H175.9A40,40,0,0,0,140.12,158L247.45,372.67a40,40,0,0,0,53.66,17.89L515.78,283.23a40,40,0,0,0,17.89-53.67L480,122.23A40,40,0,0,0,444.22,100.12Z' /%3E%3Cpath d='M658.89,569.44,444.22,676.77a40,40,0,0,0-17.89,53.67L480,837.77a40,40,0,0,0,35.78,22.11H784.1A40,40,0,0,0,819.88,802L712.55,587.33A40,40,0,0,0,658.89,569.44Z' /%3E%3Cpath d='M229.56,426.33,122.23,480a40,40,0,0,0-22.11,35.78V784.1A40,40,0,0,0,158,819.88L372.67,712.55a40,40,0,0,0,17.89-53.66L283.23,444.22A40,40,0,0,0,229.56,426.33Z' /%3E%3Cpath d='M840.91,141.87A40,40,0,0,0,802,140.12L587.33,247.45a40,40,0,0,0-17.89,53.66L676.77,515.78a40,40,0,0,0,53.67,17.89L837.77,480a40,40,0,0,0,22.11-35.78V175.9A40,40,0,0,0,840.91,141.87Z' /%3E%3C/svg%3E%0A");
+    mask-image:              url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='100 100 760 760'%3E%3Cpath d='M444.22,100.12H175.9A40,40,0,0,0,140.12,158L247.45,372.67a40,40,0,0,0,53.66,17.89L515.78,283.23a40,40,0,0,0,17.89-53.67L480,122.23A40,40,0,0,0,444.22,100.12Z' /%3E%3Cpath d='M658.89,569.44,444.22,676.77a40,40,0,0,0-17.89,53.67L480,837.77a40,40,0,0,0,35.78,22.11H784.1A40,40,0,0,0,819.88,802L712.55,587.33A40,40,0,0,0,658.89,569.44Z' /%3E%3Cpath d='M229.56,426.33,122.23,480a40,40,0,0,0-22.11,35.78V784.1A40,40,0,0,0,158,819.88L372.67,712.55a40,40,0,0,0,17.89-53.66L283.23,444.22A40,40,0,0,0,229.56,426.33Z' /%3E%3Cpath d='M840.91,141.87A40,40,0,0,0,802,140.12L587.33,247.45a40,40,0,0,0-17.89,53.66L676.77,515.78a40,40,0,0,0,53.67,17.89L837.77,480a40,40,0,0,0,22.11-35.78V175.9A40,40,0,0,0,840.91,141.87Z' /%3E%3C/svg%3E%0A");
+    -webkit-mask-repeat:     no-repeat;
+    mask-repeat:             no-repeat;
+    -webkit-mask-size:       contain;
+    mask-size:               contain;
+    -moz-osx-font-smoothing: grayscale;
+    speak:                   none;
+    text-transform:          none;
+    width:                   1em;
+
+    .page-title & {
+        background-color: #ffffff;
+        vertical-align:   -.1em;
+    }
+}
+
+$extra_fa_icons: (
+                         file-import : $fa-var-file-import,
+                         file-export : $fa-var-file-export,
+                         hand-pointer : $fa-var-hand-pointer,
+                 ) !default;
+
+// Parse standard icons mapping array
+@each $key, $value in $extra_fa_icons {
+    .#{$jicon-css-prefix}-#{$key} {
+        &:before {
+            content: fa-content($value);
+        }
+    }
+}

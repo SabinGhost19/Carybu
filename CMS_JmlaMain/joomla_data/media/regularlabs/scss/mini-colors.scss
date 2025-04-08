@@ -1,0 +1,95 @@
+/**
+ * [Copyright Regular Labs]
+ */
+
+@import "_variables";
+
+.rl-mini-colors-button {
+    background-image:    repeating-linear-gradient(45deg, #dddddd 25%, transparent 25%, transparent 75%, #dddddd 75%, #dddddd),
+                         repeating-linear-gradient(45deg, #dddddd 25%, #ffffff 25%, #ffffff 75%, #dddddd 75%, #dddddd);
+    background-position: 0 0, 4px 4px;
+    background-size:     8px 8px;
+
+    width:               26px;
+    height:              26px;
+    padding:             0;
+    border:              0;
+    border-radius:       50%;
+    color:               inherit;
+    cursor:              pointer;
+    text-indent:         -1000px;
+    white-space:         nowrap;
+    overflow:            hidden;
+
+    &:after {
+        content:          "";
+        display:          block;
+        position:         absolute;
+        width:            100%;
+        height:           100%;
+        left:             0;
+        top:              0;
+        border-radius:    50%;
+        background-color: currentColor;
+        box-shadow:       inset 0 0 2px $gray-500;
+    }
+
+    &:hover:after,
+    &:focus:after {
+        box-shadow: inset 0 0 0 2px var(--focus);
+    }
+}
+
+.rl-mini-colors-field {
+    display:  inline-block;
+    position: relative;
+    color:    transparent;
+
+    input {
+        width:   26px;
+        height:  26px;
+        cursor:  pointer;
+        opacity: 0;
+    }
+
+    .rl-mini-colors-button {
+        position: absolute;
+    }
+}
+
+.rl-mini-colors-picker {
+    box-sizing:          border-box;
+    background:          $white;
+    border:              1px solid $gray-500;
+    border-radius:       0.3rem;
+    box-shadow:          0 0 40px 10px rgba(0, 28, 73, .15);
+    display:             none;
+    flex-wrap:           wrap;
+    position:            absolute;
+    width:               178px;
+    z-index:             1100;
+    justify-content:     space-between;
+    -moz-user-select:    none;
+    -webkit-user-select: none;
+    user-select:         none;
+    padding:             12px;
+
+    &.rl-mini-colors-open {
+        display: flex;
+    }
+}
+
+.rl-mini-colors-swatches {
+    margin: 0;
+
+    div {
+        display:         flex;
+        flex-wrap:       wrap;
+        justify-content: center;
+    }
+
+    .rl-mini-colors-button {
+        position: relative;
+        margin:   6px;
+    }
+}

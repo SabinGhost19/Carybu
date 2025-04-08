@@ -1,0 +1,53 @@
+<div id="chat-page">
+  <div class="chat-container">
+    <div class="chat-header">
+      <h2>Angular WebSocket Chat Demo</h2>
+      <div class="connection-status" [class.connected]="isConnected">
+        {{ isConnected ? "Connected" : "Disconnected" }}
+      </div>
+    </div>
+    <div class="messages-container" #messagesContainer>
+      <div *ngIf="isLoading" class="loading-messages">
+        <div class="loading-spinner"></div>
+        <p>Loading messages...</p>
+      </div>
+      <ul id="messageArea">
+        <li
+          *ngFor="let message of messages"
+          [ngClass]="[
+            getMessageClass(message),
+            message.type === MessageType.CHAT ? 'chat-message' : 'event-message'
+          ]"
+        >
+          <div *ngIf="message.type === MessageType.CHAT">
+            <i [style.backgroundColor]="getAvatarColor(message.sender)">
+              {{ message.sender.charAt(0) }}
+            </i>
+            <span>{{ message.sender }}</span>
+          </div>
+          <p>{{ getMessage(message) }}</p>
+        </li>
+      </ul>
+    </div>
+    <form (ngSubmit)="sendMessage()">
+      <div class="input-container">
+        <input
+          type="text"
+          [(ngModel)]="messageContent"
+          name="messageContent"
+          placeholder="Type a message..."
+          autocomplete="off"
+          class="form-control"
+          [disabled]="!isConnected"
+        />
+        <button
+          type="submit"
+          class="primary"
+          [disabled]="!messageContent.trim() || !isConnected"
+        >
+          Send
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

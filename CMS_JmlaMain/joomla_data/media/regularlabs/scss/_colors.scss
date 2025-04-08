@@ -1,0 +1,120 @@
+$rl-colors: (
+                    gray-50: #f9fafa,
+                    gray-100: #f4f5f6,
+                    gray-200: #e6e8ec,
+                    gray-300: #c0c6cf,
+                    gray-400: #929cab,
+                    gray-500: #637188,
+                    gray-600: #4f5a6c,
+                    gray-700: #3c4452,
+                    gray-800: #2a303a,
+                    gray-900: #1e2228,
+                    red-50: #fdf8f8,
+                    red-100: #fcf0ef,
+                    red-200: #f9dcdc,
+                    red-300: #f1a9a9,
+                    red-400: #e66968,
+                    red-500: #dc2a28,
+                    red-600: #b02120,
+                    red-700: #861918,
+                    red-800: #5e1211,
+                    red-900: #420c0c,
+                    orange-50: #fefaf7,
+                    orange-100: #fef4ee,
+                    orange-200: #fee7d9,
+                    orange-300: #fdc3a1,
+                    orange-400: #fc975a,
+                    orange-500: #fb6b14,
+                    orange-600: #c85510,
+                    orange-700: #99410c,
+                    orange-800: #6b2e08,
+                    orange-900: #4b2006,
+                    yellow-50: #fffcf7,
+                    yellow-100: #fff8ee,
+                    yellow-200: #fff1d9,
+                    yellow-300: #ffdca0,
+                    yellow-400: #ffc259,
+                    yellow-500: #ffa813,
+                    yellow-600: #cc860f,
+                    yellow-700: #9b660b,
+                    yellow-800: #6d4808,
+                    yellow-900: #4c3205,
+                    green-50: #f8fcf9,
+                    green-100: #eef8f2,
+                    green-200: #daefe1,
+                    green-300: #a2d9b5,
+                    green-400: #5dbc7e,
+                    green-500: #18a047,
+                    green-600: #138038,
+                    green-700: #0e612b,
+                    green-800: #0a441e,
+                    green-900: #073015,
+                    teal-50: #f7fbfc,
+                    teal-100: #eef7f8,
+                    teal-200: #d8eef0,
+                    teal-300: #9fd6da,
+                    teal-400: #57b8bf,
+                    teal-500: #0f9aa4,
+                    teal-600: #0c7b83,
+                    teal-700: #095d64,
+                    teal-800: #064246,
+                    teal-900: #042e31,
+                    blue-50: #f7fafd,
+                    blue-100: #eef3fc,
+                    blue-200: #d8e5f9,
+                    blue-300: #9fbef0,
+                    blue-400: #588de5,
+                    blue-500: #115dda,
+                    blue-600: #0d4aae,
+                    blue-700: #0a3884,
+                    blue-800: #07275d,
+                    blue-900: #051b41,
+                    purple-50: #faf8fd,
+                    purple-100: #f5effc,
+                    purple-200: #e9daf9,
+                    purple-300: #c8a3f0,
+                    purple-400: #9f5fe5,
+                    purple-500: #761bda,
+                    purple-600: #5e15ae,
+                    purple-700: #471084,
+                    purple-800: #320b5d,
+                    purple-900: #230841,
+                    pink-50: #fdf8fc,
+                    pink-100: #fbeef8,
+                    pink-200: #f7daf0,
+                    pink-300: #eda3da,
+                    pink-400: #e05ebf,
+                    pink-500: #d319a4,
+                    pink-600: #a81483,
+                    pink-700: #800f64,
+                    pink-800: #5a0a46,
+                    pink-900: #3f0731,
+            );
+
+@function rl-color($color, $number: 500) {
+    @if ($number == 0) {
+        @return $rl-white;
+    }
+
+    @if ($number == 1000) {
+        @return $rl-black;
+    }
+
+    @if ($color == "grey") {
+        $color: gray;
+    }
+
+    @return map-get($rl-colors, #{$color}-#{$number});
+}
+
+$rl-white:  #ffffff;
+$rl-black:  #000000;
+$rl-gray:   rl-color(gray, 500);
+$rl-red:    rl-color(red, 500);
+$rl-orange: rl-color(orange, 500);
+$rl-yellow: rl-color(yellow, 500);
+$rl-green:  rl-color(green, 500);
+$rl-teal:   rl-color(teal, 500);
+$rl-blue:   rl-color(blue, 500);
+$rl-purple: rl-color(purple, 500);
+$rl-pink:   rl-color(pink, 500);
