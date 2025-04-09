@@ -33,7 +33,6 @@ public class ChatController {
             @Payload ChatMessage chatMessage,
             SimpMessageHeaderAccessor headerAccessor
     ) {
-        // Add username in web socket session
         headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
         this.chatMessageService.saveMessageToDatabase(chatMessage);
         return chatMessage;
