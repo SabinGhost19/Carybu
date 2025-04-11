@@ -1,0 +1,181 @@
+/* app.component.css */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+h2 {
+  color: #444;
+  margin-bottom: 20px;
+}
+
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.tabs button {
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  color: #777;
+}
+
+.tabs button.active {
+  color: #0078d4;
+  border-bottom: 3px solid #0078d4;
+}
+
+.tab-content {
+  padding: 20px 0;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 200px;
+}
+
+button {
+  padding: 10px 16px;
+  background-color: #0078d4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #e74c3c;
+  margin: 15px 0;
+  padding: 10px;
+  background-color: #fadbd8;
+  border-radius: 4px;
+}
+
+.result {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.sentiment-summary {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sentiment-badge {
+  padding: 8px 12px;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  margin-right: 20px;
+  text-transform: uppercase;
+}
+
+.confidence-scores {
+  flex: 1;
+}
+
+.sentence {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.sentence-text {
+  margin-bottom: 5px;
+}
+
+.sentence-sentiment {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Styles for batch analysis */
+.batch-item {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.batch-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.batch-header h4 {
+  margin: 0;
+}
+
+.remove-btn {
+  background-color: #e74c3c;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+.batch-actions {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.add-btn {
+  background-color: #27ae60;
+}
+
+.batch-results {
+  margin-top: 30px;
+}
+
+.batch-result {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
+  margin-bottom: 15px;
+  background-color: #f9f9f9;
+}

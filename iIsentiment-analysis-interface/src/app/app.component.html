@@ -1,0 +1,185 @@
+<!-- app.component.html -->
+<div class="container">
+  <h1>Analiză Sentimente - Azure Text Analytics</h1>
+
+  <div class="tabs">
+    <button
+      [class.active]="activeTab === 'single'"
+      (click)="activeTab = 'single'"
+    >
+      Analiză Individuală
+    </button>
+    <button
+      [class.active]="activeTab === 'batch'"
+      (click)="activeTab = 'batch'"
+    >
+      Analiză Batch
+    </button>
+  </div>
+
+  <!-- Analiză individuală -->
+  <div *ngIf="activeTab === 'single'" class="tab-content">
+    <h2>Analiză Sentimente - Text Individual</h2>
+
+    <div class="form-group">
+      <label for="text">Text pentru analiză:</label>
+      <textarea
+        id="text"
+        [(ngModel)]="text"
+        rows="4"
+        placeholder="Introduceți textul pentru analiza sentimentelor..."
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="language">Limbă:</label>
+      <select id="language" [(ngModel)]="language">
+        <option value="ro">Română</option>
+        <option value="en">Engleză</option>
+        <option value="fr">Franceză</option>
+        <option value="de">Germană</option>
+        <option value="es">Spaniolă</option>
+        <option value="it">Italiană</option>
+      </select>
+    </div>
+
+    <button (click)="analyzeSentiment()" [disabled]="loading">
+      {{ loading ? "Se procesează..." : "Analizează Sentimentul" }}
+    </button>
+
+    <div *ngIf="error" class="error">{{ error }}</div>
+
+    <div *ngIf="result" class="result">
+      <h3>Rezultat:</h3>
+
+      <div class="sentiment-summary">
+        <div
+          class="sentiment-badge"
+          [style.background-color]="getSentimentColor(result.documentSentiment)"
+        >
+          {{ result.documentSentiment }}
+        </div>
+
+        <div class="confidence-scores">
+          <div>
+            Încredere pozitiv:
+            {{ (result.confidenceScores.positive * 100).toFixed(2) }}%
+          </div>
+          <div>
+            Încredere neutru:
+            {{ (result.confidenceScores.neutral * 100).toFixed(2) }}%
+          </div>
+          <div>
+            Încredere negativ:
+            {{ (result.confidenceScores.negative * 100).toFixed(2) }}%
+          </div>
+        </div>
+      </div>
+
+      <h4>Analiza la nivel de propoziție:</h4>
+      <div *ngFor="let sentence of result.sentences" class="sentence">
+        <div class="sentence-text">{{ sentence.text }}</div>
+        <div
+          class="sentence-sentiment"
+          [style.color]="getSentimentColor(sentence.sentiment)"
+        >
+          {{ sentence.sentiment }}
+          (P: {{ (sentence.confidenceScores.positive * 100).toFixed(1) }}%, N:
+          {{ (sentence.confidenceScores.neutral * 100).toFixed(1) }}%, Neg:
+          {{ (sentence.confidenceScores.negative * 100).toFixed(1) }}%)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Analiză batch -->
+  <div *ngIf="activeTab === 'batch'" class="tab-content">
+    <h2>Analiză Sentimente - Batch</h2>
+
+    <div *ngFor="let item of batchTexts; let i = index" class="batch-item">
+      <div class="batch-header">
+        <h4>Text #{{ i + 1 }}</h4>
+        <button
+          *ngIf="batchTexts.length > 1"
+          (click)="removeBatchText(i)"
+          class="remove-btn"
+        >
+          Șterge
+        </button>
+      </div>
+
+      <div class="form-group">
+        <textarea
+          [(ngModel)]="item.text"
+          rows="3"
+          placeholder="Introduceți textul pentru analiza sentimentelor..."
+        ></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Limbă:</label>
+        <select [(ngModel)]="item.language">
+          <option value="ro">Română</option>
+          <option value="en">Engleză</option>
+          <option value="fr">Franceză</option>
+          <option value="de">Germană</option>
+          <option value="es">Spaniolă</option>
+          <option value="it">Italiană</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="batch-actions">
+      <button (click)="addBatchText()" class="add-btn">+ Adaugă Text</button>
+      <button
+        (click)="analyzeBatchSentiment()"
+        [disabled]="batchLoading"
+        class="analyze-btn"
+      >
+        {{ batchLoading ? "Se procesează..." : "Analizează Batch" }}
+      </button>
+    </div>
+
+    <div *ngIf="batchError" class="error">{{ batchError }}</div>
+
+    <div *ngIf="batchResults.length > 0" class="batch-results">
+      <h3>Rezultate Batch:</h3>
+
+      <div *ngFor="let result of batchResults" class="batch-result">
+        <h4>Document ID: {{ result.id }}</h4>
+
+        <div *ngIf="result.error">
+          <div class="error">Eroare: {{ result.error }}</div>
+        </div>
+
+        <div *ngIf="!result.error">
+          <div class="sentiment-summary">
+            <div
+              class="sentiment-badge"
+              [style.background-color]="
+                getSentimentColor(result.documentSentiment)
+              "
+            >
+              {{ result.documentSentiment }}
+            </div>
+
+            <div class="confidence-scores">
+              <div>
+                Încredere pozitiv:
+                {{ (result.confidenceScores.positive * 100).toFixed(2) }}%
+              </div>
+              <div>
+                Încredere neutru:
+                {{ (result.confidenceScores.neutral * 100).toFixed(2) }}%
+              </div>
+              <div>
+                Încredere negativ:
+                {{ (result.confidenceScores.negative * 100).toFixed(2) }}%
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
