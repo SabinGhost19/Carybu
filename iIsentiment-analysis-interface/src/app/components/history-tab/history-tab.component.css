@@ -1,0 +1,74 @@
+.history-container {
+  padding: 1rem;
+}
+
+.history-list {
+  margin-top: 1rem;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.history-item:hover {
+  background-color: #f9f9f9;
+}
+
+.history-file-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.history-file-info i {
+  font-size: 1.5rem;
+  color: #3498db;
+}
+
+.file-name {
+  font-weight: 500;
+}
+
+.history-date {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.sentiment-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.sentiment-positive {
+  background-color: rgba(46, 204, 113, 0.2);
+  color: #27ae60;
+}
+
+.sentiment-negative {
+  background-color: rgba(231, 76, 60, 0.2);
+  color: #c0392b;
+}
+
+.sentiment-neutral {
+  background-color: rgba(149, 165, 166, 0.2);
+  color: #7f8c8d;
+}
+
+.sentiment-mixed {
+  background-color: rgba(241, 196, 15, 0.2);
+  color: #f39c12;
+}
+
+.empty-history {
+  text-align: center;
+  padding: 2rem;
+  color: #888;
+}

@@ -1,56 +1,56 @@
-<!-- app.component.html -->
+<!-- sentiment analysis app -->
 <div class="container">
-  <h1>Analiză Sentimente - Azure Text Analytics</h1>
+  <h1>Sentiment Analysis - Azure Text Analytics</h1>
 
   <div class="tabs">
     <button
       [class.active]="activeTab === 'single'"
       (click)="activeTab = 'single'"
     >
-      Analiză Individuală
+      Single Analysis
     </button>
     <button
       [class.active]="activeTab === 'batch'"
       (click)="activeTab = 'batch'"
     >
-      Analiză Batch
+      Batch Analysis
     </button>
   </div>
 
-  <!-- Analiză individuală -->
+  <!-- single analysis -->
   <div *ngIf="activeTab === 'single'" class="tab-content">
-    <h2>Analiză Sentimente - Text Individual</h2>
+    <h2>Sentiment Analysis - Single Text</h2>
 
     <div class="form-group">
-      <label for="text">Text pentru analiză:</label>
+      <label for="text">Text to analyze:</label>
       <textarea
         id="text"
         [(ngModel)]="text"
         rows="4"
-        placeholder="Introduceți textul pentru analiza sentimentelor..."
+        placeholder="Enter text for sentiment analysis..."
       ></textarea>
     </div>
 
     <div class="form-group">
-      <label for="language">Limbă:</label>
+      <label for="language">Language:</label>
       <select id="language" [(ngModel)]="language">
-        <option value="ro">Română</option>
-        <option value="en">Engleză</option>
-        <option value="fr">Franceză</option>
-        <option value="de">Germană</option>
-        <option value="es">Spaniolă</option>
-        <option value="it">Italiană</option>
+        <option value="ro">Romanian</option>
+        <option value="en">English</option>
+        <option value="fr">French</option>
+        <option value="de">German</option>
+        <option value="es">Spanish</option>
+        <option value="it">Italian</option>
       </select>
     </div>
 
     <button (click)="analyzeSentiment()" [disabled]="loading">
-      {{ loading ? "Se procesează..." : "Analizează Sentimentul" }}
+      {{ loading ? "Processing..." : "Analyze Sentiment" }}
     </button>
 
     <div *ngIf="error" class="error">{{ error }}</div>
 
     <div *ngIf="result" class="result">
-      <h3>Rezultat:</h3>
+      <h3>Result:</h3>
 
       <div class="sentiment-summary">
         <div
@@ -62,21 +62,21 @@
 
         <div class="confidence-scores">
           <div>
-            Încredere pozitiv:
+            Positive confidence:
             {{ (result.confidenceScores.positive * 100).toFixed(2) }}%
           </div>
           <div>
-            Încredere neutru:
+            Neutral confidence:
             {{ (result.confidenceScores.neutral * 100).toFixed(2) }}%
           </div>
           <div>
-            Încredere negativ:
+            Negative confidence:
             {{ (result.confidenceScores.negative * 100).toFixed(2) }}%
           </div>
         </div>
       </div>
 
-      <h4>Analiza la nivel de propoziție:</h4>
+      <h4>Sentence-level analysis:</h4>
       <div *ngFor="let sentence of result.sentences" class="sentence">
         <div class="sentence-text">{{ sentence.text }}</div>
         <div
@@ -92,9 +92,9 @@
     </div>
   </div>
 
-  <!-- Analiză batch -->
+  <!-- batch analysis -->
   <div *ngIf="activeTab === 'batch'" class="tab-content">
-    <h2>Analiză Sentimente - Batch</h2>
+    <h2>Sentiment Analysis - Batch</h2>
 
     <div *ngFor="let item of batchTexts; let i = index" class="batch-item">
       <div class="batch-header">
@@ -104,7 +104,7 @@
           (click)="removeBatchText(i)"
           class="remove-btn"
         >
-          Șterge
+          Remove
         </button>
       </div>
 
@@ -112,44 +112,44 @@
         <textarea
           [(ngModel)]="item.text"
           rows="3"
-          placeholder="Introduceți textul pentru analiza sentimentelor..."
+          placeholder="Enter text for sentiment analysis..."
         ></textarea>
       </div>
 
       <div class="form-group">
-        <label>Limbă:</label>
+        <label>Language:</label>
         <select [(ngModel)]="item.language">
-          <option value="ro">Română</option>
-          <option value="en">Engleză</option>
-          <option value="fr">Franceză</option>
-          <option value="de">Germană</option>
-          <option value="es">Spaniolă</option>
-          <option value="it">Italiană</option>
+          <option value="ro">Romanian</option>
+          <option value="en">English</option>
+          <option value="fr">French</option>
+          <option value="de">German</option>
+          <option value="es">Spanish</option>
+          <option value="it">Italian</option>
         </select>
       </div>
     </div>
 
     <div class="batch-actions">
-      <button (click)="addBatchText()" class="add-btn">+ Adaugă Text</button>
+      <button (click)="addBatchText()" class="add-btn">+ Add Text</button>
       <button
         (click)="analyzeBatchSentiment()"
         [disabled]="batchLoading"
         class="analyze-btn"
       >
-        {{ batchLoading ? "Se procesează..." : "Analizează Batch" }}
+        {{ batchLoading ? "Processing..." : "Analyze Batch" }}
       </button>
     </div>
 
     <div *ngIf="batchError" class="error">{{ batchError }}</div>
 
     <div *ngIf="batchResults.length > 0" class="batch-results">
-      <h3>Rezultate Batch:</h3>
+      <h3>Batch Results:</h3>
 
       <div *ngFor="let result of batchResults" class="batch-result">
         <h4>Document ID: {{ result.id }}</h4>
 
         <div *ngIf="result.error">
-          <div class="error">Eroare: {{ result.error }}</div>
+          <div class="error">Error: {{ result.error }}</div>
         </div>
 
         <div *ngIf="!result.error">
@@ -165,15 +165,15 @@
 
             <div class="confidence-scores">
               <div>
-                Încredere pozitiv:
+                Positive confidence:
                 {{ (result.confidenceScores.positive * 100).toFixed(2) }}%
               </div>
               <div>
-                Încredere neutru:
+                Neutral confidence:
                 {{ (result.confidenceScores.neutral * 100).toFixed(2) }}%
               </div>
               <div>
-                Încredere negativ:
+                Negative confidence:
                 {{ (result.confidenceScores.negative * 100).toFixed(2) }}%
               </div>
             </div>

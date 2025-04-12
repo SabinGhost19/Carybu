@@ -1,140 +1,115 @@
-// app.component.ts
 import { Component } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-interface SentimentResult {
-  documentSentiment: string;
-  confidenceScores: {
-    positive: number;
-    neutral: number;
-    negative: number;
-  };
-  sentences: {
-    text: string;
-    sentiment: string;
-    confidenceScores: {
-      positive: number;
-      neutral: number;
-      negative: number;
-    };
-  }[];
-}
+import { UploadTabComponent } from './components/upload-tab/upload-tab.component';
+import { TextTabComponent } from './components/text-tab/text-tab.component';
+import { HistoryTabComponent } from './components/history-tab/history-tab.component';
+import { ResultsComponent } from './components/results/results.component';
+import { LoadingOverlayComponent } from './components/loading-overlay/loading-overlay.component';
+import { SentimentService } from './services/sentiment.service';
 
 @Component({
   selector: 'app-root',
-  standalone: true, // Important pentru componente standalone
+  standalone: true,
   imports: [
-    CommonModule, // Pentru directive precum *ngIf, *ngFor
-    FormsModule, // Pentru [(ngModel)]
-    HttpClientModule, // Pentru HttpClient
+    CommonModule,
+    FormsModule,
+    UploadTabComponent,
+    TextTabComponent,
+    HistoryTabComponent,
+    ResultsComponent,
+    LoadingOverlayComponent,
   ],
-  templateUrl: './app.component.html',
+  template: `
+    <div class="container">
+      <header>
+        <h1>Sentiment Analysis</h1>
+        <p>Upload a file or enter text to analyze sentiments</p>
+      </header>
+
+      <div class="tabs">
+        <button
+          class="tab-btn"
+          [class.active]="activeTab === 'upload'"
+          (click)="setActiveTab('upload')"
+        >
+          File Upload
+        </button>
+        <button
+          class="tab-btn"
+          [class.active]="activeTab === 'text'"
+          (click)="setActiveTab('text')"
+        >
+          Text Input
+        </button>
+        <button
+          class="tab-btn"
+          [class.active]="activeTab === 'history'"
+          (click)="setActiveTab('history')"
+        >
+          History
+        </button>
+      </div>
+
+      <div class="tab-content" [class.active]="activeTab === 'upload'">
+        <app-upload-tab
+          *ngIf="activeTab === 'upload'"
+          (analyzeResults)="showResults($event)"
+        >
+        </app-upload-tab>
+      </div>
+
+      <div class="tab-content" [class.active]="activeTab === 'text'">
+        <app-text-tab
+          *ngIf="activeTab === 'text'"
+          (analyzeResults)="showResults($event)"
+        >
+        </app-text-tab>
+      </div>
+
+      <div class="tab-content" [class.active]="activeTab === 'history'">
+        <app-history-tab
+          *ngIf="activeTab === 'history'"
+          (historyItemSelected)="showResults($event)"
+        >
+        </app-history-tab>
+      </div>
+
+      <app-results *ngIf="showResultsSection" [resultData]="resultData">
+      </app-results>
+    </div>
+
+    <app-loading-overlay [isLoading]="isLoading"></app-loading-overlay>
+  `,
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  text: string = '';
-  language: string = 'ro';
-  loading: boolean = false;
-  result: SentimentResult | null = null;
-  error: string | null = null;
-  activeTab: string = 'single';
+  activeTab = 'upload';
+  isLoading = false;
+  showResultsSection = false;
+  resultData: any = null;
 
-  batchTexts: { id: string; text: string; language: string }[] = [
-    { id: '1', text: '', language: 'ro' },
-  ];
-  batchResults: any[] = [];
-  batchLoading: boolean = false;
-  batchError: string | null = null;
-
-  constructor(private http: HttpClient) {}
-
-  analyzeSentiment() {
-    if (!this.text) {
-      this.error = 'Textul este obligatoriu';
-      return;
-    }
-
-    this.loading = true;
-    this.result = null;
-    this.error = null;
-
-    this.http
-      .post<SentimentResult>('http://localhost:3000/api/analyze-sentiment', {
-        text: this.text,
-        language: this.language,
-      })
-      .subscribe({
-        next: (response) => {
-          this.result = response;
-          this.loading = false;
-        },
-        error: (error) => {
-          this.error =
-            'Eroare la analiza sentimentelor: ' +
-            (error.error?.error || error.message);
-          this.loading = false;
-        },
-      });
-  }
-
-  addBatchText() {
-    this.batchTexts.push({
-      id: (this.batchTexts.length + 1).toString(),
-      text: '',
-      language: 'ro',
+  constructor(private sentimentService: SentimentService) {
+    this.sentimentService.loadingState.subscribe((state) => {
+      this.isLoading = state;
     });
   }
 
-  removeBatchText(index: number) {
-    this.batchTexts.splice(index, 1);
+  setActiveTab(tab: string): void {
+    this.activeTab = tab;
+    if (tab === 'history') {
+      this.sentimentService.loadHistory();
+    }
   }
 
-  analyzeBatchSentiment() {
-    const validTexts = this.batchTexts.filter(
-      (item) => item.text.trim().length > 0
-    );
-
-    if (validTexts.length === 0) {
-      this.batchError = 'Cel puțin un text este obligatoriu';
-      return;
-    }
-
-    this.batchLoading = true;
-    this.batchResults = [];
-    this.batchError = null;
-
-    this.http
-      .post<any[]>('http://localhost:3000/api/analyze-sentiment-batch', {
-        documents: validTexts,
-      })
-      .subscribe({
-        next: (response) => {
-          this.batchResults = response;
-          this.batchLoading = false;
-        },
-        error: (error) => {
-          this.batchError =
-            'Eroare la analiza sentimentelor în batch: ' +
-            (error.error?.error || error.message);
-          this.batchLoading = false;
-        },
-      });
-  }
-
-  getSentimentColor(sentiment: string): string {
-    switch (sentiment) {
-      case 'positive':
-        return 'green';
-      case 'negative':
-        return 'red';
-      case 'neutral':
-        return 'gray';
-      case 'mixed':
-        return 'orange';
-      default:
-        return 'black';
-    }
+  showResults(data: any): void {
+    this.resultData = data;
+    this.showResultsSection = true;
+    setTimeout(() => {
+      const resultsElement = document.querySelector('app-results');
+      if (resultsElement) {
+        resultsElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
   }
 }

@@ -1,9 +1,5 @@
-// script.js
-
-// Configurare API
 const API_BASE_URL = "http://localhost:3000/api";
 
-// Elemente DOM
 const tabButtons = document.querySelectorAll(".tab-btn");
 const tabContents = document.querySelectorAll(".tab-content");
 const dropArea = document.getElementById("drop-area");
@@ -18,31 +14,25 @@ const resultsContainer = document.getElementById("results-container");
 const resultsContent = document.getElementById("results-content");
 const loadingOverlay = document.getElementById("loading-overlay");
 
-// Variabile globale
 let selectedFile = null;
 let historyData = [];
 
-// Gestionare taburi
 tabButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    // Eliminăm clasa active de pe toate butoanele și conținutul taburilor
     tabButtons.forEach((btn) => btn.classList.remove("active"));
     tabContents.forEach((content) => content.classList.remove("active"));
 
-    // Adăugăm clasa active pe butonul curent și conținutul corespunzător
     button.classList.add("active");
     document
       .getElementById(`${button.dataset.tab}-tab`)
       .classList.add("active");
 
-    // Dacă am selectat tab-ul istorie, încărcăm istoricul
     if (button.dataset.tab === "history") {
       loadHistory();
     }
   });
 });
 
-// Gestionare drag and drop
 ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
   dropArea.addEventListener(eventName, preventDefaults, false);
 });
@@ -83,7 +73,6 @@ function handleDrop(e) {
   }
 }
 
-// Gestionare selecție fișier
 fileInput.addEventListener("change", function () {
   if (this.files.length > 0) {
     handleFiles(this.files);
@@ -94,7 +83,6 @@ function handleFiles(files) {
   selectedFile = files[0];
   const fileName = selectedFile.name;
 
-  // Afișăm numele fișierului în zona de drop
   dropArea.innerHTML = `
         <i class="fas fa-file-alt"></i>
         <p class="file-name">${fileName}</p>
@@ -102,11 +90,9 @@ function handleFiles(files) {
         <label for="file-input" class="file-label">Schimbă fișierul</label>
     `;
 
-  // Activăm butonul de upload
   uploadBtn.disabled = false;
 }
 
-// Gestionare încărcare fișier
 uploadBtn.addEventListener("click", uploadFile);
 
 async function uploadFile() {
@@ -136,7 +122,6 @@ async function uploadFile() {
     const result = await response.json();
     displayResults(result);
 
-    // Resetăm zona de drop
     dropArea.innerHTML = `
             <i class="fas fa-cloud-upload-alt"></i>
             <p>Trageți fișierul aici sau</p>
@@ -145,7 +130,6 @@ async function uploadFile() {
             <p class="file-types">Formate acceptate: .txt, .docx, .pdf, .rtf</p>
         `;
 
-    // Dezactivăm butonul de upload
     uploadBtn.disabled = true;
 
     // Resetăm selecția de fișier
@@ -158,7 +142,6 @@ async function uploadFile() {
   }
 }
 
-// Gestionare analiză text
 analyzeTextBtn.addEventListener("click", analyzeText);
 
 async function analyzeText() {
@@ -192,8 +175,6 @@ async function analyzeText() {
 
     const result = await response.json();
     displayResults(result);
-
-    // Nu resetăm textul introdus pentru a permite utilizatorului să facă modificări
   } catch (error) {
     showError(error.message);
   } finally {
@@ -201,7 +182,6 @@ async function analyzeText() {
   }
 }
 
-// Încărcare istoric
 async function loadHistory() {
   showLoading();
 
@@ -230,7 +210,6 @@ async function loadHistory() {
       historyItem.className = "history-item";
       historyItem.dataset.id = item.id;
 
-      // Determinăm iconița în funcție de tipul de fișier
       let fileIcon = "fa-file-alt";
       if (item.contentType.includes("pdf")) {
         fileIcon = "fa-file-pdf";
@@ -264,7 +243,6 @@ async function loadHistory() {
   }
 }
 
-// Încărcare detalii istoric
 async function loadHistoryDetail(id) {
   showLoading();
 
@@ -284,11 +262,8 @@ async function loadHistoryDetail(id) {
   }
 }
 
-// Afișare rezultate
 function displayResults(result) {
   resultsContainer.style.display = "block";
-
-  // Determinăm clasa pentru badge-ul de sentiment
   const sentimentClass = result.sentimentResult?.documentSentiment || "neutral";
   const sentimentText =
     (result.sentimentResult?.documentSentiment || "neutru")
@@ -296,10 +271,8 @@ function displayResults(result) {
       .toUpperCase() +
     (result.sentimentResult?.documentSentiment || "neutru").slice(1);
 
-  // Formatăm scorurile de încredere
   const formatScore = (score) => Math.round(score * 100) + "%";
 
-  // Determinăm iconița în funcție de tipul de fișier
   let fileIcon = "fa-file-alt";
   if (result.fileName) {
     if (
@@ -424,11 +397,9 @@ function displayResults(result) {
         </div>
     `;
 
-  // Scroll către rezultate
   resultsContainer.scrollIntoView({ behavior: "smooth" });
 }
 
-// Utilități
 function showLoading() {
   loadingOverlay.style.display = "flex";
 }
@@ -446,6 +417,5 @@ function showError(message) {
         </div>
     `;
 
-  // Scroll către rezultate
   resultsContainer.scrollIntoView({ behavior: "smooth" });
 }

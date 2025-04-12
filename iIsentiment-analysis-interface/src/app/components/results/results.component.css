@@ -1,0 +1,193 @@
+.results {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+}
+
+.results h2 {
+  color: #333;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.5rem;
+}
+
+.result-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.error-card {
+  border-left: 4px solid #e74c3c;
+  padding-left: 1.5rem;
+}
+
+.error-card h3 {
+  color: #e74c3c;
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.file-info i {
+  font-size: 2rem;
+  color: #3498db;
+}
+
+.file-name {
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+
+.sentiment-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.sentiment-positive {
+  background-color: rgba(46, 204, 113, 0.2);
+  color: #27ae60;
+}
+
+.sentiment-negative {
+  background-color: rgba(231, 76, 60, 0.2);
+  color: #c0392b;
+}
+
+.sentiment-neutral {
+  background-color: rgba(149, 165, 166, 0.2);
+  color: #7f8c8d;
+}
+
+.sentiment-mixed {
+  background-color: rgba(241, 196, 15, 0.2);
+  color: #f39c12;
+}
+
+.confidence-scores {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.score-item {
+  flex: 1;
+  text-align: center;
+  padding: 1rem;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+}
+
+.score-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.score-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.score-value.positive {
+  color: #2ecc71;
+}
+
+.score-value.neutral {
+  color: #95a5a6;
+}
+
+.score-value.negative {
+  color: #e74c3c;
+}
+
+.extracted-text {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+.text-preview {
+  margin-top: 0.5rem;
+  font-style: italic;
+  color: #666;
+}
+
+h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.sentences-analysis {
+  margin-top: 1rem;
+}
+
+.sentence-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.sentence-text {
+  flex: 1;
+  margin-right: 1rem;
+}
+
+.download-section {
+  margin-top: 1.5rem;
+  text-align: right;
+}
+
+.action-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.action-btn:hover {
+  background-color: #2980b9;
+}
+
+@media (max-width: 768px) {
+  .confidence-scores {
+    flex-direction: column;
+  }
+
+  .sentence-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sentence-sentiment {
+    margin-top: 0.5rem;
+  }
+}
