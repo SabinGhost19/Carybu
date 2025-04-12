@@ -1,0 +1,103 @@
+# Aplicație de Analiză a Sentimentelor
+
+Această aplicație permite analiza sentimentelor din texte și fișiere, stocarea acestora în Azure Blob Storage și păstrarea unui istoric al analizelor într-o bază de date SQL Azure.
+
+## Caracteristici
+
+- Încărcarea și procesarea fișierelor (`.txt`, `.docx`, `.pdf`, `.rtf`, etc.)
+- Introducerea directă de text pentru analiză
+- Extragerea automată a textului din diferite formate de fișiere
+- Analiza sentimentelor folosind Azure Text Analytics
+- Stocarea fișierelor în Azure Blob Storage
+- Păstrarea unui istoric al analizelor în Azure SQL Database
+- Vizualizarea rezultatelor analizei de sentiment
+- Descărcarea fișierelor analizate anterior
+
+## Structura proiectului
+
+```
+/
+├── config/             # Configurații
+├── controllers/        # Controllere pentru gestionarea cererilor
+├── routes/             # Definirea rutelor API
+├── services/           # Servicii pentru logica de business
+├── .env                # Variabile de mediu
+├── .env.sample         # Șablon pentru variabilele de mediu
+├── package.json        # Dependențe și scripturi
+├── server.js           # Punctul de intrare în aplicație
+└── README.md           # Documentație
+```
+
+## Servicii utilizate
+
+- **Azure Text Analytics** - pentru analiza sentimentelor
+- **Azure Blob Storage** - pentru stocarea fișierelor
+- **Azure SQL Database** - pentru stocarea metadatelor și rezultatelor
+
+## Instalare
+
+1. Clonează repository-ul
+2. Instalează dependențele:
+   ```
+   npm install
+   ```
+3. Copiază fișierul `.env.sample` în `.env` și completează cu valorile corespunzătoare:
+   ```
+   cp .env.sample .env
+   ```
+4. Pornește serverul:
+   ```
+   npm start
+   ```
+
+## Configurare Azure
+
+### Configurare Azure Text Analytics
+
+1. Creează un serviciu Azure Text Analytics în portalul Azure
+2. Adaugă endpoint-ul și cheia API în fișierul `.env`
+
+### Configurare Azure Blob Storage
+
+1. Creează un cont de stocare în Azure
+2. Creează un container numit "documents" (sau alt nume specificat în `.env`)
+3. Adaugă connection string-ul în fișierul `.env`
+
+### Configurare Azure SQL Database
+
+1. Creează o bază de date SQL în Azure
+2. Adaugă detaliile de conexiune în fișierul `.env`
+3. Tabela necesară se va crea automat la prima rulare a aplicației
+
+## API Endpoints
+
+### Fișiere
+
+- `POST /api/files/upload` - Încarcă și analizează un fișier
+- `POST /api/files/analyze-text` - Analizează un text direct introdus
+- `GET /api/files/download/:id` - Descarcă un fișier
+- `DELETE /api/files/:id` - Șterge un fișier și înregistrarea asociată
+
+### Sentiment
+
+- `POST /api/sentiment/analyze` - Analizează sentimentul unui text
+- `POST /api/sentiment/analyze-batch` - Analizează sentimentul pentru mai multe texte
+
+### Istoric
+
+- `GET /api/history` - Obține istoricul analizelor
+- `GET /api/history/:id` - Obține detaliile unei analize specifice
+
+## Integrarea în CMS
+
+Pentru a integra această aplicație într-un CMS, utilizați un iframe cu URL-ul către frontend-ul Angular care comunică cu acest backend:
+
+```html
+<iframe src="https://your-angular-app-url" width="100%" height="600px" frameborder="0"></iframe>
+```
+
+## Observații
+
+- Această aplicație suportă limba română și alte limbi pentru analiza sentimentelor.
+- Fișierele sunt stocate în Azure Blob Storage, iar metadatele în Azure SQL Database.
+- Există o limită de 50MB pentru dimensiunea fișierelor încărcate.

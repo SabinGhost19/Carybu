@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analiză Sentimente</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Analiză Sentimente</h1>
+        <p>
+          Încărcați un fișier sau introduceți text pentru a analiza sentimentele
+        </p>
+      </header>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="upload">
+          Încărcare Fișier
+        </button>
+        <button class="tab-btn" data-tab="text">Introducere Text</button>
+        <button class="tab-btn" data-tab="history">Istoric</button>
+      </div>
+
+      <div class="tab-content active" id="upload-tab">
+        <div class="upload-container">
+          <div class="upload-area" id="drop-area">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>Trageți fișierul aici sau</p>
+            <label for="file-input" class="file-label"
+              >Selectați un fișier</label
+            >
+            <input type="file" id="file-input" accept=".txt,.docx,.pdf,.rtf" />
+            <p class="file-types">Formate acceptate: .txt, .docx, .pdf, .rtf</p>
+          </div>
+
+          <div class="language-selection">
+            <label for="file-language">Limba (opțional):</label>
+            <select id="file-language">
+              <option value="">Auto-detectare</option>
+              <option value="ro">Română</option>
+              <option value="en">Engleză</option>
+              <option value="fr">Franceză</option>
+              <option value="de">Germană</option>
+              <option value="es">Spaniolă</option>
+              <option value="it">Italiană</option>
+            </select>
+          </div>
+
+          <button id="upload-btn" class="action-btn" disabled>
+            Analizează Fișier
+          </button>
+        </div>
+      </div>
+
+      <div class="tab-content" id="text-tab">
+        <div class="text-container">
+          <textarea
+            id="input-text"
+            placeholder="Introduceți textul pentru analiză..."
+          ></textarea>
+
+          <div class="language-selection">
+            <label for="text-language">Limba (opțional):</label>
+            <select id="text-language">
+              <option value="">Auto-detectare</option>
+              <option value="ro">Română</option>
+              <option value="en">Engleză</option>
+              <option value="fr">Franceză</option>
+              <option value="de">Germană</option>
+              <option value="es">Spaniolă</option>
+              <option value="it">Italiană</option>
+            </select>
+          </div>
+
+          <button id="analyze-text-btn" class="action-btn">
+            Analizează Text
+          </button>
+        </div>
+      </div>
+
+      <div class="tab-content" id="history-tab">
+        <div class="history-container">
+          <h2>Istoric Analize</h2>
+          <div class="history-list" id="history-list">
+            <p class="empty-history">Nicio analiză în istoric</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="results" id="results-container">
+        <h2>Rezultate</h2>
+        <div id="results-content">
+          <p class="no-results">Niciun rezultat disponibil</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlay" id="loading-overlay">
+      <div class="spinner"></div>
+      <p>Se procesează...</p>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
