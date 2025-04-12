@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This Kubernetes-based web platform combines modern web technologies with cloud-native architecture to deliver a scalable, resilient system. By leveraging containerization and orchestration, the application can easily scale to meet demand while maintaining a clear separation of concerns between components. The integration of AI capabilities provides valuable sentiment analysis functionality, enhancing the overall user experience.# Kubernetes-based Web Platform with Chat and AI Integration
+This Kubernetes-based web platform combines modern web technologies with cloud-native architecture to deliver a scalable, resilient system. By leveraging containerization and orchestration, the application can easily scale to meet demand while maintaining a clear separation of concerns between components. The integration of AI capabilities provides valuable sentiment analysis functionality, enhancing the overall user experience.
 
 ## Architecture Diagram
 
