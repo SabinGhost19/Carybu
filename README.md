@@ -1,64 +1,8 @@
-## Performance and Scalability Features
-
-The architecture is designed with scalability and performance in mind:
-
-### Horizontal Scaling
-
-- Kubernetes Horizontal Pod Autoscaler (HPA) automatically scales pods based on CPU/memory metrics
-- Joomla CMS scaled to 4 replicas for load distribution and high availability
-- Chat backend scaled to 2 replicas for WebSocket connection distribution
-- Frontend applications can be scaled as needed due to their stateless nature
-
-### Performance Optimizations
-
-- Content Delivery Network (CDN) integration for static assets
-- Database query optimization with proper indexing
-- Connection pooling for database connections
-- Caching strategies at multiple levels:
-  - Browser caching with appropriate headers
-  - Application-level caching for frequently accessed data
-  - Redis cache (optional) for distributed caching
-
-### Resilience and Fault Tolerance
-
-- Self-healing capabilities through Kubernetes health checks
-- Circuit breakers for external service calls
-- Graceful degradation when dependent services are unavailable
-- Database replication for fault tolerance
-
-## Development and Operations
-
-### CI/CD Pipeline
-
-- GitHub Actions for continuous integration
-- ArgoCD for GitOps-based deployments
-- Automated testing:
-  - Unit tests for business logic
-  - Integration tests for service interactions
-  - End-to-end tests for user workflows
-
-### Monitoring and Observability
-
-- Prometheus for metrics collection
-- Grafana for visualization and dashboards
-- Loki for log aggregation
-- Jaeger for distributed tracing
-- Custom Kubernetes dashboards for cluster health
-
-### Disaster Recovery
-
-- Regular database backups
-- Infrastructure as Code (IaC) with Terraform
-- Documented recovery procedures
-- Periodic recovery testing
-
-## Conclusion
-
-This Kubernetes-based web platform combines modern web technologies with cloud-native architecture to deliver a scalable, resilient system. By leveraging containerization and orchestration, the application can easily scale to meet demand while maintaining a clear separation of concerns between components. The integration of AI capabilities provides valuable sentiment analysis functionality, enhancing the overall user experience.# Kubernetes-based Web Platform with Chat and AI Integration
+# Kubernetes-based Web Platform with Chat and AI Integration
 
 ## Project Overview
 
-This project implements a comprehensive web platform that integrates a content management system, real-time chat functionality, and AI-powered sentiment analysis capabilities, all orchestrated through Kubernetes. Designed for scalability and resilience, this microservices architecture provides a modern user experience while leveraging cloud-native technologies.
+This Kubernetes-based web platform combines modern web technologies with cloud-native architecture to deliver a scalable, resilient system. By leveraging containerization and orchestration, the application can easily scale to meet demand while maintaining a clear separation of concerns between components. The integration of AI capabilities provides valuable sentiment analysis functionality, enhancing the overall user experience.# Kubernetes-based Web Platform with Chat and AI Integration
 
 ## Architecture Diagram
 
@@ -77,6 +21,49 @@ The diagram showcases our microservices architecture with clearly defined commun
 - **Cloud Services**: Azure Blob Storage for files, SQL Server for metadata, and Sentiment Analysis API
 
 Each container is independently scalable and managed by Kubernetes, with appropriate networking between components.
+
+## Components
+
+### 1. Content Management System (CMS)
+
+- **Technology**: Joomla
+- **Replicas**: 4
+- **Port**: 80
+- **Purpose**: Hosts the main website content
+- **Database**: Dedicated database for CMS content storage
+
+### 2. Chat System
+
+- **Backend**:
+  - **Technology**: Java + Tomcat
+  - **Replicas**: 2
+  - **Port**: 88
+  - **Protocol**: WebSocket
+- **Frontend**:
+  - **Technology**: Angular
+  - **Replicas**: 1
+  - **Port**: 90
+- **Features**:
+  - Real-time messaging
+  - Message persistence in database
+  - Chronological message display
+  - User identification
+- **Integration**: Embedded in CMS via iframe
+
+### 3. AI Application
+
+- **Frontend**:
+  - **Technology**: Angular
+  - **Replicas**: 1
+- **Features**:
+  - File upload capability
+  - Processing history
+  - Integration with Azure AI services
+- **Storage**:
+  - File storage: Azure Blob Storage
+  - Metadata storage: Azure SQL Database
+- **AI Service**: Sentiment Analysis
+- **Integration**: Embedded in CMS via iframe
 
 ## Components and Workflow
 
