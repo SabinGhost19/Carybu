@@ -93,7 +93,12 @@ Această aplicație permite analiza sentimentelor din texte și fișiere, stocar
 Pentru a integra această aplicație într-un CMS, utilizați un iframe cu URL-ul către frontend-ul Angular care comunică cu acest backend:
 
 ```html
-<iframe src="https://your-angular-app-url" width="100%" height="600px" frameborder="0"></iframe>
+<iframe
+  src="https://your-angular-app-url"
+  width="100%"
+  height="600px"
+  frameborder="0"
+></iframe>
 ```
 
 ## Observații
