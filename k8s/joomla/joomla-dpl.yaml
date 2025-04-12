@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: joomla
+  labels:
+    app: joomla
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: joomla
+  template:
+    metadata:
+      labels:
+        app: joomla
+    spec:
+      containers:
+        - name: joomla
+          image: joomla:latest
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+          env:
+            - name: ANGULAR_CHAT_FRONTEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: joomla-config
+                  key: ANGULAR_CHAT_FRONTEND_URL
+
+            - name: ANGULAR_AI_FRONTEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: joomla-config
+                  key: ANGULAR_AI_FRONTEND_URL
+
+            - name: JOOMLA_DB_HOST
+              value: mysql
+
+            - name: JOOMLA_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: MYSQL_PASSWORD
+
+            - name: JOOMLA_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: MYSQL_USER
+
+            - name: JOOMLA_DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: MYSQL_DATABASE
+# {source}
+# <iframe
+#   src="<?php echo getenv('ANGULAR_FRONTEND_URL'); ?>"
+#   width="100%"
+#   height="800px"
+#   style="border:0; display:block;"
+#   allowfullscreen="yes"
+#   loading="lazy"
+# ></iframe>
+# {/source}

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: angular-chat-frontend
+spec:
+  selector:
+    app: chat-frontend
+  ports:
+    - port: 90
+      targetPort: 80
+  type: ClusterIP

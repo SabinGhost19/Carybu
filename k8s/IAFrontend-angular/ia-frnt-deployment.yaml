@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ia-frontend
+  labels:
+    app: ia-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ia-frontend
+  template:
+    metadata:
+      labels:
+        app: ia-frontend
+    spec:
+      containers:
+        - name: ia-frontend
+          image: <your-docker-registry>/ia-frontend:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: AZURE_STORAGE_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: azure-credentials
+                  key: AZURE_STORAGE_CONNECTION_STRING
+            - name: AZURE_SQL_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: azure-credentials
+                  key: AZURE_SQL_CONNECTION_STRING
+            - name: AZURE_COGNITIVE_SERVICES_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: azure-credentials
+                  key: AZURE_COGNITIVE_SERVICES_KEY
+            - name: AZURE_COGNITIVE_SERVICES_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: azure-credentials
+                  key: AZURE_COGNITIVE_SERVICES_ENDPOINT

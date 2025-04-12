@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  selector:
+    app: mysql
+  ports:
+    - port: 3306
+      targetPort: 3306
+  clusterIP: None
+  #spec.clusterIP: None - Definește un serviciu de tip "headless" (fără IP de cluster):
+  #Un serviciu headless este folosit când nu este necesar load balancing sau o adresă IP unică,
+  #ci doar descoperirea DNS a podurilor individuale.
+  #Acest lucru este util pentru MySQL, deoarece permite clienților să se conecteze direct
+  #la instanța MySQL fără intermediari.
