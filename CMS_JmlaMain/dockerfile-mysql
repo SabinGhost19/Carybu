@@ -1,0 +1,10 @@
+FROM mysql:8.0
+
+# Copy initialization SQL file
+COPY ./mysql-init/init.sql /docker-entrypoint-initdb.d/
+
+# Default auth plugin
+CMD ["--default-authentication-plugin=mysql_native_password"]
+
+# Expose port
+EXPOSE 3306

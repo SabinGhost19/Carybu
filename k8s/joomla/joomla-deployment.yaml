@@ -5,7 +5,7 @@ metadata:
   labels:
     app: joomla
 spec:
-  replicas: 4
+  replicas: 1
   selector:
     matchLabels:
       app: joomla
@@ -16,16 +16,9 @@ spec:
     spec:
       containers:
         - name: joomla
-          image: joomla:latest
+          image: sabinghost19/joomla:latest
           ports:
             - containerPort: 80
-          resources:
-            requests:
-              memory: "256Mi"
-              cpu: "500m"
-            limits:
-              memory: "512Mi"
-              cpu: "1"
           env:
             - name: ANGULAR_CHAT_FRONTEND_URL
               valueFrom:
@@ -40,7 +33,10 @@ spec:
                   key: ANGULAR_AI_FRONTEND_URL
 
             - name: JOOMLA_DB_HOST
-              value: mysql
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: MYSQL_DATABASE_HOST
 
             - name: JOOMLA_DB_PASSWORD
               valueFrom:
@@ -59,6 +55,16 @@ spec:
                 secretKeyRef:
                   name: db-credentials
                   key: MYSQL_DATABASE
+
+            - name: JOOMLA_DB_TYPE
+              value: "mysqli"
+      #     volumeMounts:
+      #       - name: joomla-storage
+      #         mountPath: /var/www/html
+      # volumes:
+      #   - name: joomla-storage
+      #     persistentVolumeClaim:
+      #       claimName: joomla-pvc
 # {source}
 # <iframe
 #   src="<?php echo getenv('ANGULAR_FRONTEND_URL'); ?>"

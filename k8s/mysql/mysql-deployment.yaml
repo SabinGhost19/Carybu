@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: mysql
-          image: mysql:5.7
+          image: sabinghost19/mysql-joomla:latest
           #variabilele de mediu sunt folosite pentru a configura MySQL
           #acestea sunt luate dintr-un secret Kubernetes
           env:

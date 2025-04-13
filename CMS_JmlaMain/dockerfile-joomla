@@ -1,0 +1,33 @@
+FROM joomla:latest
+
+# Install MySQL client
+RUN apt-get update && \
+    apt-get install -y default-mysql-client && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Create init script
+RUN echo '#!/bin/bash\n\
+# Wait for database\n\
+echo "Waiting for database connection..."\n\
+max_retries=30\n\
+counter=0\n\
+while ! mysql -h "$JOOMLA_DB_HOST" -u "$JOOMLA_DB_USER" -p"$JOOMLA_DB_PASSWORD" -e "SELECT 1" >/dev/null 2>&1; do\n\
+  sleep 5\n\
+  counter=$((counter+1))\n\
+  if [ $counter -ge $max_retries ]; then\n\
+    echo "Failed to connect to database after multiple attempts. Continuing anyway..."\n\
+    break\n\
+  fi\n\
+  echo "Retrying database connection..."\n\
+done\n\
+\n\
+# Start Apache\n\
+exec apache2-foreground\n' > /entrypoint.sh && \
+chmod +x /entrypoint.sh
+
+# Expose port
+EXPOSE 80
+
+# Use our entrypoint script
+CMD ["/entrypoint.sh"]
