@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
+@CrossOrigin(originPatterns = "*", allowCredentials = "true")
 public class ChatHistoryController {
 
     private final ChatMessageService chatMessageService;

@@ -19,7 +19,26 @@ spec:
           image: <your-docker-registry>/ia-frontend:latest
           ports:
             - containerPort: 80
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
           env:
+            - name: BACKEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: ia-frontend-config
+                  key: BACKEND_URL
+
+            - name: BACKEND_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: ia-frontend-config
+                  key: BACKEND_PORT
+
             - name: AZURE_STORAGE_CONNECTION_STRING
               valueFrom:
                 secretKeyRef:

@@ -8,4 +8,5 @@ spec:
   ports:
     - port: 90
       targetPort: 80
-  type: ClusterIP
+  #type: ClusterIP
+  type: NodePort

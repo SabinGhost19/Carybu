@@ -171,6 +171,8 @@ export class ResultsComponent implements OnChanges {
   }
 
   getApiUrl(): string {
-    return 'http://localhost:3000/api';
+    return (
+      (window as any)['environment']?.apiUrl || 'http://localhost:3000/api'
+    );
   }
 }

@@ -1,41 +1,29 @@
-# Stage 1: Build the Angular application
-FROM node:18-alpine as build
-
-# Set working directory
+FROM node:18 as build
 WORKDIR /app
-
-# Copy package files
-COPY package.json package-lock.json ./
-
-# Install dependencies
-RUN npm ci
-
-# Copy source code
+COPY package*.json ./
+RUN npm install
 COPY . .
+RUN npm run build
+# Debug: show what's in the build directory
+RUN ls -la /app/dist
 
-# Build the application
-RUN npm run build -- --configuration production
-
-# Verifică structura directorului dist
-RUN ls -la dist/chat_interface/
-
-# Stage 2: Serve the application using Nginx
 FROM nginx:alpine
+RUN apk add --no-cache bash gettext
 
-# Remove default Nginx files
-RUN rm -rf /etc/nginx/conf.d/* && rm -rf /usr/share/nginx/html/*
+# Remove ALL default content from nginx html directory
+RUN rm -rf /usr/share/nginx/html/*
 
-# Copy custom nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Remove default configs
+RUN rm -rf /etc/nginx/conf.d/*
 
-# Copy the built application
+# Copy application from the correct Angular output directory (browser folder)
 COPY --from=build /app/dist/chat_interface/ /usr/share/nginx/html/
 
-# Verifică structura în containerul final
-RUN ls -la /usr/share/nginx/html/
+# Debug: show what's been copied
+RUN ls -la /usr/share/nginx/html
 
-# Expose port 80
-EXPOSE 80
+# Copy nginx config
+COPY nginx.conf /etc/nginx/conf.d/default.conf.template
 
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Run nginx
+CMD ["sh", "-c", "envsubst '$${BACKEND_URL} $${BACKEND_PORT}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]

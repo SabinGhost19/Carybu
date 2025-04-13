@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { ChatMessage, MessageType } from '../models/chat-message.model';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MessageHistoryService {
   private messageSubject = new BehaviorSubject<ChatMessage[]>([]);
-  private serverUrl = 'http://localhost:8080';
+  private serverUrl = environment.backendUrl;
 
   messages$ = this.messageSubject.asObservable();
 
@@ -31,35 +32,33 @@ export class MessageHistoryService {
     });
 
     const fetchPromise = new Promise<void>((resolve, reject) => {
-      this.http
-        .get<any[]>(`${this.serverUrl}/chat/history`, httpOptions)
-        .subscribe({
-          next: (history) => {
-            if (!history || history.length === 0) {
-              resolve();
-              return;
-            }
-
-            const chatMessages: ChatMessage[] = history.map((msg) => {
-              const type = this.convertMessageType(msg.type);
-              const timestamp =
-                msg.timestamp || msg.time || new Date().toISOString();
-
-              return {
-                sender: msg.sender,
-                content: msg.content,
-                type: type,
-                time: new Date(timestamp),
-              };
-            });
-
-            this.messageSubject.next(chatMessages);
+      this.http.get<any[]>(`${this.serverUrl}/history`, httpOptions).subscribe({
+        next: (history) => {
+          if (!history || history.length === 0) {
             resolve();
-          },
-          error: (error) => {
-            reject(error);
-          },
-        });
+            return;
+          }
+
+          const chatMessages: ChatMessage[] = history.map((msg) => {
+            const type = this.convertMessageType(msg.type);
+            const timestamp =
+              msg.timestamp || msg.time || new Date().toISOString();
+
+            return {
+              sender: msg.sender,
+              content: msg.content,
+              type: type,
+              time: new Date(timestamp),
+            };
+          });
+
+          this.messageSubject.next(chatMessages);
+          resolve();
+        },
+        error: (error) => {
+          reject(error);
+        },
+      });
     });
 
     return Promise.race([fetchPromise, timeoutPromise]);

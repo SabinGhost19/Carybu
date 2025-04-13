@@ -16,26 +16,24 @@ spec:
     spec:
       containers:
         - name: chat-backend
-          image: <your-docker-registry>/chat-backend:latest
+          image: sabinghost19/chat-backend:latest
           ports:
             - containerPort: 8080
           env:
-            - name: DB_HOST
-              value: mysql
-            - name: DB_PORT
-              value: "3306"
-            - name: DB_USER
+            - name: MONGO_HOST
               valueFrom:
-                secretKeyRef:
-                  name: db-credentials
-                  key: MYSQL_USER
-            - name: DB_PASSWORD
+                configMapKeyRef:
+                  name: chat-backend-config
+                  key: MONGO_DB_HOST
+
+            - name: MONGO_PORT
               valueFrom:
-                secretKeyRef:
-                  name: db-credentials
-                  key: MYSQL_PASSWORD
-            - name: DB_NAME
+                configMapKeyRef:
+                  name: chat-backend-config
+                  key: MONGO_DB_PORT
+
+            - name: MONGO_DB
               valueFrom:
-                secretKeyRef:
-                  name: db-credentials
-                  key: MYSQL_DATABASE
+                configMapKeyRef:
+                  name: chat-backend-config
+                  key: MONGO_DB_NAME

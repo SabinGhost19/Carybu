@@ -16,9 +16,17 @@ spec:
     spec:
       containers:
         - name: chat-frontend
-          image: <your-docker-registry>/chat-frontend:latest
+          image: sabinghost19/chat-frontend:latest
           ports:
             - containerPort: 80
           env:
             - name: BACKEND_URL
-              value: "http://chat-backend:88"
+              valueFrom:
+                configMapKeyRef:
+                  name: chat-frontend-config
+                  key: BACKEND_URL
+            - name: BACKEND_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: chat-frontend-config
+                  key: BACKEND_PORT

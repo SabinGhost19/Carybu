@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ia-frontend-config
+data:
+  BACKEND_URL: value
+  BACKEND_PORT: "90"

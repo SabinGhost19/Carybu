@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ChatMessage, MessageType } from '../models/chat-message.model';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class WebsocketConnectionService {
   private reconnectAttempts = 0;
   private maxReconnectAttempts = 5;
   private reconnectTimeout: any = null;
-  private serverUrl = 'http://localhost:8080';
+  private serverUrl = environment.backendUrl;
 
   connectionStatus$ = this.connectionStatus.asObservable();
 
@@ -55,7 +56,7 @@ export class WebsocketConnectionService {
       const SockJS = (window as any).SockJS;
       const Stomp = (window as any).Stomp;
 
-      const socket = new SockJS(`${this.serverUrl}/ws`, null, {
+      const socket = new SockJS(environment.wsEndpoint, null, {
         transports: ['websocket', 'xhr-streaming', 'xhr-polling'],
         timeout: 10000,
       });
