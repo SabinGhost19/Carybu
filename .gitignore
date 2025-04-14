@@ -1,7 +1,7 @@
 # Completely ignore these directories
 /CMS_JmlaMain/mysql_data/
 /CMS_JmlaMain/joomla_data/
-
+/cluster-project/
 # Maven build files
 **/target/
 **/.mvn/
