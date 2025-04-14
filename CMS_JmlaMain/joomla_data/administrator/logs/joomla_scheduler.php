@@ -23,3 +23,10 @@
 2025-04-12	18:09:07	INFO	Task> Could not instantiate mail function.
 2025-04-12	18:09:07	INFO	Task> UpdateNotification end
 2025-04-12	18:09:07	INFO	Successfully finished task#03 in 0.73 (net 0.73) seconds.
+2025-04-13	20:25:09	INFO	Running task#02 'Session GC'.
+2025-04-13	20:25:09	INFO	Task> SessionGC end
+2025-04-13	20:25:09	INFO	Successfully finished task#02 in 0.00 (net 0.00) seconds.
+2025-04-13	20:25:31	INFO	Running task#03 'Update Notification'.
+2025-04-13	20:25:32	INFO	Task> Could not instantiate mail function.
+2025-04-13	20:25:32	INFO	Task> UpdateNotification end
+2025-04-13	20:25:32	INFO	Successfully finished task#03 in 0.96 (net 0.96) seconds.

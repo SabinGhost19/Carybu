@@ -1,8 +1,9 @@
 version: "3.8"
 services:
   joomla:
-    image: joomla:latest
-    container_name: joomla-web
+    build:
+      context: .
+      dockerfile: dockerfile-joomla
     ports:
       - "8088:80"
     environment:
@@ -14,21 +15,18 @@ services:
     depends_on:
       - db
     volumes:
-      - ./joomla_data:/var/www/html:z
-    restart: unless-stopped
+      - ./joomla_data:/var/www/html
 
   db:
-    image: mysql:8.0
-    container_name: joomla-db
-    command: --default-authentication-plugin=mysql_native_password
+    build:
+      context: .
+      dockerfile: dockerfile-mysql
     environment:
       - MYSQL_ROOT_PASSWORD=root_pass
       - MYSQL_USER=joomla_user
       - MYSQL_PASSWORD=joomla_pass
       - MYSQL_DATABASE=joomla_db
     volumes:
-      - ./mysql_data:/var/lib/mysql:z
-      - ./mysql-init:/docker-entrypoint-initdb.d
+      - ./mysql_data:/var/lib/mysql
     ports:
       - "3306:3306"
-    restart: unless-stopped

@@ -43,21 +43,3 @@ spec:
                 secretKeyRef:
                   name: db-credentials
                   key: MYSQL_PASSWORD
-          #limita de resurse....
-          resources:
-            requests:
-              memory: "512Mi"
-              cpu: "500m"
-            limits:
-              memory: "1Gi"
-              cpu: "1"
-          ports:
-            - containerPort: 3306
-              name: mysql
-          volumeMounts:
-            - name: mysql-storage
-              mountPath: /var/lib/mysql #locatia unde se va monta volumul
-      volumes:
-        - name: mysql-storage
-          persistentVolumeClaim:
-            claimName: mysql-pvc
