@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: joomla-config
 data:
-  ANGULAR_CHAT_FRONTEND_URL: "http://192.168.49.2:32525/"
+  ANGULAR_CHAT_FRONTEND_URL: "http://192.168.49.2:31986/"
   ANGULAR_AI_FRONTEND_URL: "http://angular-ia-frontend:91"

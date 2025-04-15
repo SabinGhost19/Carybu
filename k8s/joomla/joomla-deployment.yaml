@@ -19,6 +19,15 @@ spec:
           image: sabinghost19/joomla:latest
           ports:
             - containerPort: 80
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  [
+                    "/bin/sh",
+                    "-c",
+                    "mkdir -p /var/www/html/tmp/regularlabs/custom_php && chown -R www-data:www-data /var/www/html/tmp && chmod -R 755 /var/www/html/tmp",
+                  ]
           env:
             - name: ANGULAR_CHAT_FRONTEND_URL
               valueFrom:

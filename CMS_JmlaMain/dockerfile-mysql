@@ -1,10 +1,8 @@
 
 FROM mysql:8.0
 
-# Copiază fișierul de inițializare SQL
 COPY database_dump.sql /docker-entrypoint-initdb.d/
 
 COPY ./mysql-init/ /docker-entrypoint-initdb.d/
 
-# Setează permisiunile corecte
 RUN chown -R mysql:mysql /var/lib/mysql
