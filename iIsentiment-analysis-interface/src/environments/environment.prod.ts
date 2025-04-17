@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  backendUrl: '/chat',
+  backendUrl: '/api',
 };

@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: ia-frontend-config
 data:
-  BACKEND_URL: value
-  BACKEND_PORT: "90"
+  BACKEND_URL: azure-backend-service
+  BACKEND_PORT: "3000"

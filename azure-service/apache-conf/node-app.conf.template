@@ -1,0 +1,43 @@
+# /etc/apache2/sites-available/node-app.conf.template
+
+<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    ServerName _default_
+    DocumentRoot /var/www/html
+
+    # Permite orice hostname pentru cereri în Kubernetes
+    ServerAlias *
+
+    # Proxy invers către aplicația Node.js cu adresă și port parametrizabile
+    ProxyRequests Off
+    ProxyPreserveHost On
+    ProxyVia Full
+
+    # Permite toate conexiunile - necesar în Kubernetes
+    <Proxy *>
+        Require all granted
+        Allow from all
+    </Proxy>
+
+    # Setări pentru proxy invers cu variabile de mediu
+    ProxyPass / http://${NODE_HOST}:${NODE_PORT}/
+    ProxyPassReverse / http://${NODE_HOST}:${NODE_PORT}/
+    
+    # Headers pentru proxy
+    RequestHeader set X-Forwarded-Proto "http"
+    RequestHeader set X-Forwarded-Port "80"
+
+    # Setări pentru timeout mai mari în Kubernetes
+    ProxyTimeout 300
+    
+    # Keep-alive pentru performanță
+    KeepAlive On
+    KeepAliveTimeout 60
+
+    # Configurare logs
+    ErrorLog ${APACHE_LOG_DIR}/node-app-error.log
+    CustomLog ${APACHE_LOG_DIR}/node-app-access.log combined
+    
+    # Log level mai detaliat pentru debugging în Kubernetes
+    LogLevel warn
+</VirtualHost>

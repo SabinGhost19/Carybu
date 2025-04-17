@@ -17,7 +17,7 @@ RUN rm -rf /usr/share/nginx/html/*
 RUN rm -rf /etc/nginx/conf.d/*
 
 # Copy application from the correct Angular output directory (browser folder)
-COPY --from=build /app/dist/chat_interface/ /usr/share/nginx/html/
+COPY --from=build /app/dist/chat_interface/browser/  /usr/share/nginx/html/
 
 # Debug: show what's been copied
 RUN ls -la /usr/share/nginx/html

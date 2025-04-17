@@ -1,7 +1,7 @@
 // app.component.ts
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
+import { environment } from 'src/environments/environment.prod';
 interface SentimentResult {
   documentSentiment: string;
   confidenceScores: {
@@ -39,6 +39,8 @@ export class AppComponent {
   batchResults: any[] = [];
   batchLoading: boolean = false;
   batchError: string | null = null;
+  //baze api...modified here for production
+  private readonly API_BASE_URL = environment.backendUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -53,7 +55,7 @@ export class AppComponent {
     this.error = null;
 
     this.http
-      .post<SentimentResult>('http://localhost:3000/api/analyze-sentiment', {
+      .post<SentimentResult>(`${this.API_BASE_URL}/analyze-sentiment`, {
         text: this.text,
         language: this.language,
       })
@@ -98,7 +100,7 @@ export class AppComponent {
     this.batchError = null;
 
     this.http
-      .post<any[]>('http://localhost:3000/api/analyze-sentiment-batch', {
+      .post<any[]>(`${this.API_BASE_URL}/analyze-sentiment-batch`, {
         documents: validTexts,
       })
       .subscribe(

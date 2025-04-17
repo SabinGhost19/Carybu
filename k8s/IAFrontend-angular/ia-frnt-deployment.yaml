@@ -16,16 +16,9 @@ spec:
     spec:
       containers:
         - name: ia-frontend
-          image: <your-docker-registry>/ia-frontend:latest
+          image: sabinghost19/ia-azure-sentyanaly-angular:latest
           ports:
             - containerPort: 80
-          resources:
-            limits:
-              memory: "512Mi"
-              cpu: "500m"
-            requests:
-              memory: "256Mi"
-              cpu: "250m"
           env:
             - name: BACKEND_URL
               valueFrom:
@@ -38,24 +31,3 @@ spec:
                 configMapKeyRef:
                   name: ia-frontend-config
                   key: BACKEND_PORT
-
-            - name: AZURE_STORAGE_CONNECTION_STRING
-              valueFrom:
-                secretKeyRef:
-                  name: azure-credentials
-                  key: AZURE_STORAGE_CONNECTION_STRING
-            - name: AZURE_SQL_CONNECTION_STRING
-              valueFrom:
-                secretKeyRef:
-                  name: azure-credentials
-                  key: AZURE_SQL_CONNECTION_STRING
-            - name: AZURE_COGNITIVE_SERVICES_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: azure-credentials
-                  key: AZURE_COGNITIVE_SERVICES_KEY
-            - name: AZURE_COGNITIVE_SERVICES_ENDPOINT
-              valueFrom:
-                secretKeyRef:
-                  name: azure-credentials
-                  key: AZURE_COGNITIVE_SERVICES_ENDPOINT

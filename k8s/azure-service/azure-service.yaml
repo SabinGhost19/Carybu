@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: azure-backend-service
+spec:
+  selector:
+    app: azure-backend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+    - name: node-api
+      port: 3000
+      targetPort: 3000
+  type: ClusterIP

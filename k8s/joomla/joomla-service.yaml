@@ -9,5 +9,16 @@ spec:
     - port: 80
       targetPort: 80
       nodePort: 31111
-  type: NodePort
+  type: LoadBalancer
   #type: LoadBalancer
+#   apiVersion: v1
+# kind: Service
+# metadata:
+#   name: nginx-service
+# spec:
+#   selector:
+#     app: nginx
+#   ports:
+#   - port: 80
+#     targetPort: 80
+#   type: LoadBalancer
