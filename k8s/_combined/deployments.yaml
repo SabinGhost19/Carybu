@@ -1,0 +1,318 @@
+#MYSQL
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    #Recreate înseamnă că toate podurile existente vor fi terminate înainte de crearea unora noi.
+    #Aceasta este importantă pentru MySQL, deoarece previne problemele de acces simultan la baza de date.
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: sabinghost19/mysql-joomla:latest
+          #variabilele de mediu sunt folosite pentru a configura MySQL
+          #acestea sunt luate dintr-un secret Kubernetes
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: MYSQL_ROOT_PASSWORD
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: MYSQL_DATABASE
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: MYSQL_USER
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: MYSQL_PASSWORD
+
+---
+#MONGODB
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+  labels:
+    app: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - name: mongodb
+          image: mongo:latest
+          ports:
+            - containerPort: 27017
+          # env:
+          #   - name: MONGO_INITDB_ROOT_USERNAME
+          #     valueFrom:
+          #       secretKeyRef:
+          #         name: mongodb-credentials
+          #         key: MONGO_USER
+          #   - name: MONGO_INITDB_ROOT_PASSWORD
+          #     valueFrom:
+          #       secretKeyRef:
+          #         name: mongodb-credentials
+          #         key: MONGO_PASSWORD
+          volumeMounts:
+            - name: mongodb-persistent-storage
+              mountPath: /data/db
+      volumes:
+        - name: mongodb-persistent-storage
+          persistentVolumeClaim:
+            claimName: mongodb-pvc
+
+---
+#JOOMLA
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: joomla
+  labels:
+    app: joomla
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: joomla
+  template:
+    metadata:
+      labels:
+        app: joomla
+    spec:
+      containers:
+        - name: joomla
+          image: sabinghost19/joomla:latest
+          ports:
+            - containerPort: 80
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  [
+                    "/bin/sh",
+                    "-c",
+                    "mkdir -p /var/www/html/tmp/regularlabs/custom_php && chown -R www-data:www-data /var/www/html/tmp && chmod -R 755 /var/www/html/tmp",
+                  ]
+          env:
+            - name: ANGULAR_CHAT_FRONTEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: joomla-config
+                  key: ANGULAR_CHAT_FRONTEND_URL
+
+            - name: ANGULAR_AI_FRONTEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: joomla-config
+                  key: ANGULAR_AI_FRONTEND_URL
+
+            - name: JOOMLA_DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: MYSQL_DATABASE_HOST
+
+            - name: JOOMLA_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: MYSQL_PASSWORD
+
+            - name: JOOMLA_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: MYSQL_USER
+
+            - name: JOOMLA_DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: MYSQL_DATABASE
+
+            - name: JOOMLA_DB_TYPE
+              value: "mysqli"
+      #     volumeMounts:
+      #       - name: joomla-storage
+      #         mountPath: /var/www/html
+      # volumes:
+      #   - name: joomla-storage
+      #     persistentVolumeClaim:
+      #       claimName: joomla-pvc
+
+---
+#SPRINOG BOOT
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-backend
+  labels:
+    app: chat-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: chat-backend
+  template:
+    metadata:
+      labels:
+        app: chat-backend
+    spec:
+      containers:
+        - name: chat-backend
+          image: sabinghost19/chat-backend:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MONGO_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: chat-backend-config
+                  key: MONGO_DB_HOST
+
+            - name: MONGO_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: chat-backend-config
+                  key: MONGO_DB_PORT
+
+            - name: MONGO_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: chat-backend-config
+                  key: MONGO_DB_NAME
+---
+#AZURE BACKEND NODE JS
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: azure-backend-deployment
+  labels:
+    app: azure-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: azure-backend
+  template:
+    metadata:
+      labels:
+        app: azure-backend
+    spec:
+      containers:
+        - name: azure-backend
+          image: sabinghost19/azure-backend-service-node:latest
+          ports:
+            - containerPort: 80
+              name: http
+            - containerPort: 3000
+              name: node-api
+          resources:
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+            requests:
+              cpu: "0.5"
+              memory: "512Mi"
+          envFrom:
+            - configMapRef:
+                name: azure-backend-config
+            - secretRef:
+                name: azure-backend-secrets
+
+---
+#IA ANGULAR frontend
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ia-frontend
+  labels:
+    app: ia-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ia-frontend
+  template:
+    metadata:
+      labels:
+        app: ia-frontend
+    spec:
+      containers:
+        - name: ia-frontend
+          image: sabinghost19/ia-azure-sentyanaly-angular:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: BACKEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: ia-frontend-config
+                  key: BACKEND_URL
+
+            - name: BACKEND_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: ia-frontend-config
+                  key: BACKEND_PORT
+
+---
+#CHAT ANGULAR frontend
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-frontend
+  labels:
+    app: chat-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-frontend
+  template:
+    metadata:
+      labels:
+        app: chat-frontend
+    spec:
+      containers:
+        - name: chat-frontend
+          image: sabinghost19/chat-frontend:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: BACKEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: chat-frontend-config
+                  key: BACKEND_URL
+            - name: BACKEND_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: chat-frontend-config
+                  key: BACKEND_PORT

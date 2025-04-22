@@ -1,0 +1,50 @@
+#JOOMLA
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: joomla-config
+data:
+  ANGULAR_CHAT_FRONTEND_URL: "http://192.168.49.2:31113"
+  ANGULAR_AI_FRONTEND_URL: "http://192.168.49.2:31112"
+---
+#AZURE BACKEND NODE JS
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: azure-backend-config
+data:
+  PORT: "3000"
+  NODE_ENV: "production"
+  AZURE_TEXT_ANALYTICS_ENDPOINT: "https://sentimental-analy.cognitiveservices.azure.com/"
+  AZURE_STORAGE_CONTAINER_NAME: "caribu-container"
+  AZURE_SQL_SERVER: "caribu-test-sql-server.database.windows.net"
+  AZURE_SQL_DATABASE: "SentimentAnalysisDB"
+  AZURE_SQL_USER: "sabinghost19"
+---
+#CHAT SPRING BOOOT
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: chat-backend-config
+data:
+  MONGO_DB_HOST: mongodb
+  MONGO_DB_PORT: "27017"
+  MONGO_DB_NAME: chatdb
+---
+#CHAT ANGULAR frontend
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: chat-frontend-config
+data:
+  BACKEND_URL: "chat-backend"
+  BACKEND_PORT: "88"
+---
+#IA ANGULAR frontend
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ia-frontend-config
+data:
+  BACKEND_URL: azure-backend-service
+  BACKEND_PORT: "3000"

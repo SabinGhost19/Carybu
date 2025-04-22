@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-frontend
+  labels:
+    app: chat-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-frontend
+  template:
+    metadata:
+      labels:
+        app: chat-frontend
+    spec:
+      containers:
+        - name: chat-frontend
+          image: sabinghost19/chat-frontend:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: BACKEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: chat-frontend-config
+                  key: BACKEND_URL
+            - name: BACKEND_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: chat-frontend-config
+                  key: BACKEND_PORT

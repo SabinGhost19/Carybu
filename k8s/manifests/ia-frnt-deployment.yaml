@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ia-frontend
+  labels:
+    app: ia-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ia-frontend
+  template:
+    metadata:
+      labels:
+        app: ia-frontend
+    spec:
+      containers:
+        - name: ia-frontend
+          image: sabinghost19/ia-azure-sentyanaly-angular:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: BACKEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: ia-frontend-config
+                  key: BACKEND_URL
+
+            - name: BACKEND_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: ia-frontend-config
+                  key: BACKEND_PORT

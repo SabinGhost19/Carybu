@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: joomla-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+spec:
+  #storageClassName: "ssd"  # sau "gp2" (AWS), "premium" (Azure), etc.
+
+  #volumul poate fi montat
+  #pentru scriere de un singur nod odata
+  #dar poate fi accesat de mai multe poduri daca ruleaza pe acelasi nod
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    #solicitare un volum de 5GB
+    requests:
+      storage: 5Gi

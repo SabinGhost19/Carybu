@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: joomla
+  labels:
+    app: joomla
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: joomla
+  template:
+    metadata:
+      labels:
+        app: joomla
+    spec:
+      containers:
+        - name: joomla
+          image: sabinghost19/joomla:latest
+          ports:
+            - containerPort: 80
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  [
+                    "/bin/sh",
+                    "-c",
+                    "mkdir -p /var/www/html/tmp/regularlabs/custom_php && chown -R www-data:www-data /var/www/html/tmp && chmod -R 755 /var/www/html/tmp",
+                  ]
+          env:
+            - name: ANGULAR_CHAT_FRONTEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: joomla-config
+                  key: ANGULAR_CHAT_FRONTEND_URL
+
+            - name: ANGULAR_AI_FRONTEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: joomla-config
+                  key: ANGULAR_AI_FRONTEND_URL
+
+            - name: JOOMLA_DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: MYSQL_DATABASE_HOST
+
+            - name: JOOMLA_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: MYSQL_PASSWORD
+
+            - name: JOOMLA_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: MYSQL_USER
+
+            - name: JOOMLA_DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: MYSQL_DATABASE
+
+            - name: JOOMLA_DB_TYPE
+              value: "mysqli"
+      #     volumeMounts:
+      #       - name: joomla-storage
+      #         mountPath: /var/www/html
+      # volumes:
+      #   - name: joomla-storage
+      #     persistentVolumeClaim:
+      #       claimName: joomla-pvc
+# {source}
+# <iframe
+#   src="<?php echo getenv('ANGULAR_FRONTEND_URL'); ?>"
+#   width="100%"
+#   height="800px"
+#   style="border:0; display:block;"
+#   allowfullscreen="yes"
+#   loading="lazy"
+# ></iframe>
+# {/source}

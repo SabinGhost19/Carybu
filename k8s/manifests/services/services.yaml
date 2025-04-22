@@ -1,0 +1,98 @@
+#JOOMLA
+apiVersion: v1
+kind: Service
+metadata:
+  name: joomla
+spec:
+  selector:
+    app: joomla
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 31111
+  type: LoadBalancer
+---
+#MYSQL for Joomla
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  selector:
+    app: mysql
+  ports:
+    - port: 3306
+      targetPort: 3306
+  clusterIP: None
+---
+#MONGODB
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+spec:
+  selector:
+    app: mongodb
+  ports:
+    - port: 27017
+      targetPort: 27017
+  type: ClusterIP
+---
+#IA ANGULAR frontend
+apiVersion: v1
+kind: Service
+metadata:
+  name: angular-ia-frontend
+spec:
+  selector:
+    app: ia-frontend
+  ports:
+    - port: 91
+      targetPort: 80
+      nodePort: 31112
+  type: NodePort
+---
+#CHAT ANGULAR frontend
+apiVersion: v1
+kind: Service
+metadata:
+  name: angular-chat-frontend
+spec:
+  selector:
+    app: chat-frontend
+  ports:
+    - port: 90
+      targetPort: 80
+      nodePort: 31113
+  type: NodePort
+  #type: NodePort
+---
+#SPRING BOOT backend
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-backend
+spec:
+  selector:
+    app: chat-backend
+  ports:
+    - port: 88
+      targetPort: 8080
+  type: ClusterIP
+---
+#NODE JS backend AZURE SERVICE
+apiVersion: v1
+kind: Service
+metadata:
+  name: azure-backend-service
+spec:
+  selector:
+    app: azure-backend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+    - name: node-api
+      port: 3000
+      targetPort: 3000
+  type: ClusterIP

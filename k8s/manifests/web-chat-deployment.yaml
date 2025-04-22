@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-backend
+  labels:
+    app: chat-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: chat-backend
+  template:
+    metadata:
+      labels:
+        app: chat-backend
+    spec:
+      containers:
+        - name: chat-backend
+          image: sabinghost19/chat-backend:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MONGO_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: chat-backend-config
+                  key: MONGO_DB_HOST
+
+            - name: MONGO_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: chat-backend-config
+                  key: MONGO_DB_PORT
+
+            - name: MONGO_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: chat-backend-config
+                  key: MONGO_DB_NAME
