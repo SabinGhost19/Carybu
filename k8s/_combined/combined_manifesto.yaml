@@ -381,7 +381,7 @@ spec:
                   name: db-credentials
             - name: JOOMLA_DB_TYPE
               value: mysqli
-          image: sabinghost19/joomla:latest
+          image: sabinghost19/joomla:v1.7
           imagePullPolicy: Always
           lifecycle:
             postStart:
@@ -463,5 +463,6 @@ spec:
                 secretKeyRef:
                   key: MYSQL_PASSWORD
                   name: db-credentials
-          image: sabinghost19/mysql-joomla:latest
+          image: sabinghost19/mysql-joomla:v1.8
+          imagePullPolicy: Always
           name: mysql
