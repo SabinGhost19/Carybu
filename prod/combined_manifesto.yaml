@@ -1,0 +1,468 @@
+apiVersion: v1
+data:
+  AZURE_SQL_DATABASE: SentimentAnalysisDB
+  AZURE_SQL_SERVER: caribu-test-sql-server.database.windows.net
+  AZURE_SQL_USER: sabinghost19
+  AZURE_STORAGE_CONTAINER_NAME: caribu-container
+  AZURE_TEXT_ANALYTICS_ENDPOINT: https://sentimental-analy.cognitiveservices.azure.com/
+  NODE_ENV: production
+  PORT: "3000"
+kind: ConfigMap
+metadata:
+  name: azure-backend-config
+---
+apiVersion: v1
+data:
+  MONGO_DB_HOST: mongodb
+  MONGO_DB_NAME: chatdb
+  MONGO_DB_PORT: "27017"
+kind: ConfigMap
+metadata:
+  name: chat-backend-config
+---
+apiVersion: v1
+data:
+  BACKEND_PORT: "88"
+  BACKEND_URL: chat-backend
+kind: ConfigMap
+metadata:
+  name: chat-frontend-config
+---
+apiVersion: v1
+data:
+  BACKEND_PORT: "3000"
+  BACKEND_URL: azure-backend-service
+kind: ConfigMap
+metadata:
+  name: ia-frontend-config
+---
+apiVersion: v1
+data:
+  ANGULAR_AI_FRONTEND_URL: http://74.225.184.131:31112
+  ANGULAR_CHAT_FRONTEND_URL: http://74.225.184.131:31113
+kind: ConfigMap
+metadata:
+  name: joomla-config
+---
+apiVersion: v1
+data:
+  AZURE_SQL_PASSWORD: MTIzc2FiaW5zdGFuJA==
+  AZURE_STORAGE_CONNECTION_STRING: RGVmYXVsdEVuZHBvaW50c1Byb3RvY29sPWh0dHBzO0FjY291bnROYW1lPWNhcmlieXRlc3RibG9iMTk7QWNjb3VudEtleT04c242YVo0ZzdjRURnOXFiSGdqVkhIbjlCK2xsVkJTakpmc2pRVndyTG1QcmJ1c0poMis1U0E4em9TWDluUUtocWthZnE0WnFKSDVXK0FTdHJtN2xHQT09O0VuZHBvaW50U3VmZml4PWNvcmUud2luZG93cy5uZXQ=
+  AZURE_TEXT_ANALYTICS_API_KEY: MlBpN2JVQVlaWnBUREtwdllqV205ZUgyMmVoeFBLeDdZVW1tenJUMEp5TmxuSzhlRGg2akpRUUo5OUJEQUM1UnFMSlhKM3czQUFBYUFDT0dRYWdn
+kind: Secret
+metadata:
+  name: azure-backend-secrets
+type: Opaque
+---
+apiVersion: v1
+data:
+  MYSQL_DATABASE: am9vbWxhX2Ri
+  MYSQL_DATABASE_HOST: ZGI=
+  MYSQL_PASSWORD: am9vbWxhX3Bhc3M=
+  MYSQL_ROOT_PASSWORD: cm9vdA==
+  MYSQL_USER: am9vbWxhX3VzZXI=
+kind: Secret
+metadata:
+  name: db-credentials
+type: Opaque
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: angular-chat-frontend
+spec:
+  ports:
+    - nodePort: 31113
+      port: 90
+      targetPort: 80
+  selector:
+    app: chat-frontend
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: angular-ia-frontend
+spec:
+  ports:
+    - nodePort: 31112
+      port: 91
+      targetPort: 80
+  selector:
+    app: ia-frontend
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: azure-backend-service
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+    - name: node-api
+      port: 3000
+      targetPort: 3000
+  selector:
+    app: azure-backend
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-backend
+spec:
+  ports:
+    - port: 88
+      targetPort: 8080
+  selector:
+    app: chat-backend
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  clusterIP: None
+  ports:
+    - port: 3306
+      targetPort: 3306
+  selector:
+    app: mysql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: joomla
+spec:
+  ports:
+    - nodePort: 31111
+      port: 80
+      targetPort: 80
+  selector:
+    app: joomla
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+spec:
+  ports:
+    - port: 27017
+      targetPort: 27017
+  selector:
+    app: mongodb
+  type: ClusterIP
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: joomla-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: azure-backend
+  name: azure-backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: azure-backend
+  template:
+    metadata:
+      labels:
+        app: azure-backend
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: azure-backend-config
+            - secretRef:
+                name: azure-backend-secrets
+          image: sabinghost19/azure-backend-service-node:latest
+          name: azure-backend
+          ports:
+            - containerPort: 80
+              name: http
+            - containerPort: 3000
+              name: node-api
+          resources:
+            limits:
+              cpu: "1"
+              memory: 1Gi
+            requests:
+              cpu: "0.5"
+              memory: 512Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: chat-backend
+  name: chat-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: chat-backend
+  template:
+    metadata:
+      labels:
+        app: chat-backend
+    spec:
+      containers:
+        - env:
+            - name: MONGO_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: MONGO_DB_HOST
+                  name: chat-backend-config
+            - name: MONGO_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: MONGO_DB_PORT
+                  name: chat-backend-config
+            - name: MONGO_DB
+              valueFrom:
+                configMapKeyRef:
+                  key: MONGO_DB_NAME
+                  name: chat-backend-config
+          image: sabinghost19/chat-backend:latest
+          name: chat-backend
+          ports:
+            - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: chat-frontend
+  name: chat-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-frontend
+  template:
+    metadata:
+      labels:
+        app: chat-frontend
+    spec:
+      containers:
+        - env:
+            - name: BACKEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: BACKEND_URL
+                  name: chat-frontend-config
+            - name: BACKEND_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: BACKEND_PORT
+                  name: chat-frontend-config
+          image: sabinghost19/chat-frontend:latest
+          name: chat-frontend
+          ports:
+            - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ia-frontend
+  name: ia-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ia-frontend
+  template:
+    metadata:
+      labels:
+        app: ia-frontend
+    spec:
+      containers:
+        - env:
+            - name: BACKEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: BACKEND_URL
+                  name: ia-frontend-config
+            - name: BACKEND_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: BACKEND_PORT
+                  name: ia-frontend-config
+          image: sabinghost19/ia-azure-sentyanaly-angular:latest
+          name: ia-frontend
+          ports:
+            - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: joomla
+  name: joomla
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: joomla
+  template:
+    metadata:
+      labels:
+        app: joomla
+    spec:
+      containers:
+        - env:
+            - name: ANGULAR_CHAT_FRONTEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: ANGULAR_CHAT_FRONTEND_URL
+                  name: joomla-config
+            - name: ANGULAR_AI_FRONTEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: ANGULAR_AI_FRONTEND_URL
+                  name: joomla-config
+            - name: JOOMLA_DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_DATABASE_HOST
+                  name: db-credentials
+            - name: JOOMLA_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_PASSWORD
+                  name: db-credentials
+            - name: JOOMLA_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_USER
+                  name: db-credentials
+            - name: JOOMLA_DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_DATABASE
+                  name: db-credentials
+            - name: JOOMLA_DB_TYPE
+              value: mysqli
+          image: sabinghost19/joomla:v1.7
+          imagePullPolicy: Always
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - mkdir -p /var/www/html/tmp/regularlabs/custom_php && chown -R www-data:www-data
+                    /var/www/html/tmp && chmod -R 755 /var/www/html/tmp
+          name: joomla
+          ports:
+            - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mongodb
+  name: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - image: mongo:latest
+          name: mongodb
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongodb-persistent-storage
+      volumes:
+        - name: mongodb-persistent-storage
+          persistentVolumeClaim:
+            claimName: mongodb-pvc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mysql
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_ROOT_PASSWORD
+                  name: db-credentials
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_DATABASE
+                  name: db-credentials
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_USER
+                  name: db-credentials
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_PASSWORD
+                  name: db-credentials
+          image: sabinghost19/mysql-joomla:v1.8
+          imagePullPolicy: Always
+          name: mysql
