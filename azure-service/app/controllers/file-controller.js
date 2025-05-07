@@ -4,9 +4,6 @@ const textExtractionService = require("../services/text-extraction-service");
 const sentimentService = require("../services/sentiment-service");
 const dbService = require("../services/db-service");
 
-/**
- * Încarcă un fișier, extrage text și analizează sentimentul
- */
 async function uploadAndAnalyze(req, res, next) {
   try {
     // Verifică dacă a fost furnizat un fișier
@@ -72,9 +69,6 @@ async function uploadAndAnalyze(req, res, next) {
   }
 }
 
-/**
- * Controller pentru analiza textului direct (fără fișier)
- */
 async function analyzeText(req, res, next) {
   try {
     const { text, language } = req.body;

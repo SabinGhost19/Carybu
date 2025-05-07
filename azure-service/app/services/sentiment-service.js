@@ -11,9 +11,6 @@ const textAnalyticsClient = new TextAnalyticsClient(
   new AzureKeyCredential(config.azure.textAnalytics.apiKey)
 );
 
-/**
- * Analizează sentimentul unui text
- */
 async function analyzeSentiment(text, language = null) {
   try {
     // Limitarea textului pentru a respecta limitele API-ului (5120 caractere)
@@ -42,9 +39,6 @@ async function analyzeSentiment(text, language = null) {
   }
 }
 
-/**
- * Împarte textul în fragmente mai mici pentru a respecta limitele API-ului
- */
 function splitTextIntoChunks(text, maxChunkSize = 5000) {
   const chunks = [];
   let currentChunk = "";
@@ -83,9 +77,6 @@ function splitTextIntoChunks(text, maxChunkSize = 5000) {
   return chunks;
 }
 
-/**
- * Agregă rezultatele pentru mai multe fragmente într-un singur rezultat
- */
 function aggregateResults(results, originalText) {
   // Inițializăm scorurile generale
   let totalPositive = 0;

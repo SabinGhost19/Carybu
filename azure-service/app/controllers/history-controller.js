@@ -1,9 +1,6 @@
 // controllers/history-controller.js
 const dbService = require("../services/db-service");
 
-/**
- * Obține istoricul analizelor
- */
 async function getHistory(req, res, next) {
   try {
     const limit = parseInt(req.query.limit) || 100;
@@ -17,9 +14,6 @@ async function getHistory(req, res, next) {
   }
 }
 
-/**
- * Obține detaliile unei analize specifice
- */
 async function getHistoryDetail(req, res, next) {
   try {
     const { id } = req.params;

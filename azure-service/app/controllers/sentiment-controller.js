@@ -1,9 +1,6 @@
 // controllers/sentiment-controller.js
 const sentimentService = require("../services/sentiment-service");
 
-/**
- * Analizează sentimentul unui text
- */
 async function analyzeSentiment(req, res, next) {
   try {
     const { text, language } = req.body;
@@ -20,9 +17,6 @@ async function analyzeSentiment(req, res, next) {
   }
 }
 
-/**
- * Analizează sentimentul pentru mai multe texte (batch)
- */
 async function analyzeSentimentBatch(req, res, next) {
   try {
     const { documents } = req.body;
