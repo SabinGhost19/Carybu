@@ -8,7 +8,9 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 @Controller
+@CrossOrigin(originPatterns = "*", allowCredentials = "true")
 public class ChatController {
 
     private final ChatMessageService chatMessageService;

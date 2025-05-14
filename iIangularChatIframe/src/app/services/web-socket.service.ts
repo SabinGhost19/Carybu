@@ -4,8 +4,7 @@ import { ChatMessage, MessageType } from '../models/chat-message.model';
 import { MessageHistoryService } from './message-history.service';
 import { WebsocketConnectionService } from './websocket-connection.service';
 
-// don't use direct imports for sockjs and stomp
-// we'll access them through the global window object
+
 
 @Injectable({
   providedIn: 'root',

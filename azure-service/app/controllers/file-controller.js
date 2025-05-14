@@ -16,14 +16,12 @@ async function uploadAndAnalyze(req, res, next) {
     const file = req.files.file;
     const language = req.body.language || null;
 
-    // Încarcă fișierul în Blob Storage
     const blobInfo = await storageService.uploadFile(
       file.data,
       file.name,
       file.mimetype
     );
 
-    // Salvează înregistrarea în baza de date
     const fileRecordId = await dbService.addFileRecord({
       fileName: file.name,
       blobUrl: blobInfo.blobUrl,
@@ -31,14 +29,12 @@ async function uploadAndAnalyze(req, res, next) {
       fileSize: file.size,
     });
 
-    // Extrage text din fișier
     const extractedText = await textExtractionService.extractTextFromBuffer(
       file.data,
       file.mimetype,
       file.name
     );
 
-    // Verifică dacă s-a putut extrage text
     if (!extractedText || extractedText.trim().length === 0) {
       throw new Error("Nu s-a putut extrage text din fișier");
     }

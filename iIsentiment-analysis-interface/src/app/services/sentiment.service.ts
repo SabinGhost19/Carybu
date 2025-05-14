@@ -9,7 +9,6 @@ import { environment } from 'src/environments/environment.prod';
 export class SentimentService {
   private readonly API_BASE_URL = environment.backendUrl;
 
-  //private API_BASE_URL = 'http://localhost:3000/api';
   public loadingState = new BehaviorSubject<boolean>(false);
   public historyData = new BehaviorSubject<any[]>([]);
 

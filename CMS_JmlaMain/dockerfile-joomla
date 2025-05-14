@@ -8,5 +8,4 @@ RUN mkdir -p /var/www/html/tmp/regularlabs/custom_php && \
     chown -R www-data:www-data /var/www/html/tmp && \
     chmod -R 755 /var/www/html/tmp
 
-# Expose port 80
 EXPOSE 80
