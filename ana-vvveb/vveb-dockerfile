@@ -1,0 +1,15 @@
+FROM vvveb/vvvebcms:latest
+
+ENV DB_HOST=mysql
+ENV DB_DATABASE=vvveb
+ENV DB_USER=ANA@gmail.com
+ENV DB_PASSWORD=t&2>(mh+6<E&#zfCkAP)gG!)nrx%661q(*bikk<y)3
+ENV DB_ENGINE=mysqli
+
+COPY backup_html/ /var/www/html/
+
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
+
+EXPOSE 80
+

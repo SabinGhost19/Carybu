@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vvveb
+spec:
+  selector:
+    matchLabels:
+      app: vvveb
+  template:
+    metadata:
+      labels:
+        app: vvveb
+    spec:
+      containers:
+        - name: vvveb
+          image: sabinghost19/custom-vvvebcms:v2.0
+          ports:
+            - containerPort: 80

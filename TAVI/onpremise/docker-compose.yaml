@@ -1,0 +1,32 @@
+version: "3.8"
+services:
+  joomla:
+    build:
+      context: .
+      dockerfile: dockerfile-joomla
+    ports:
+      - "8088:80"
+    environment:
+      - JOOMLA_DB_HOST=db
+      - JOOMLA_DB_USER=joomla_user
+      - JOOMLA_DB_PASSWORD=joomla_pass
+      - JOOMLA_DB_NAME=joomla_db
+      - JOOMLA_DB_TYPE=mysqli
+    depends_on:
+      - db
+    volumes:
+      - ./joomla_data:/var/www/html
+
+  db:
+    build:
+      context: .
+      dockerfile: dockerfile-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_pass
+      - MYSQL_USER=joomla_user
+      - MYSQL_PASSWORD=joomla_pass
+      - MYSQL_DATABASE=joomla_db
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"

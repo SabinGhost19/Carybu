@@ -1,0 +1,4 @@
+docker cp ana-vvveb-php-1:/var/www/html ./backup_html
+
+
+docker exec ana-vvveb-db-1 mysqldump -u root -pvvveb vvveb > backup_database.sql

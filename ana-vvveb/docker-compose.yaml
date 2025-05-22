@@ -1,0 +1,41 @@
+services:
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: vvveb
+      MYSQL_DATABASE: vvveb
+      MYSQL_USER: vvveb
+      MYSQL_PASSWORD: vvveb
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - internal
+
+  php:
+    image: vvveb/vvvebcms:latest
+    environment:
+      DB_HOST: db
+      DB_DATABASE: vvveb
+      DB_USER: vvveb
+      DB_PASSWORD: vvveb
+      DB_ENGINE: mysqli
+    volumes:
+      - vvveb-volume:/var/www/html/
+      - db:/var/lib/mysql
+    ports:
+      - "8080:80"
+    links:
+      - db:mysql
+    depends_on:
+      - db
+    networks:
+      - internal
+
+volumes:
+  vvveb-volume:
+  db:
+
+networks:
+  internal:
+    driver: bridge

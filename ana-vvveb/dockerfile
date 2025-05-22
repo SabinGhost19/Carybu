@@ -1,0 +1,31 @@
+# FROM vvveb/vvvebcms:php8.3-fpm-alpine
+
+
+# RUN apk add --no-cache sqlite
+
+# COPY fisier_dump.sql /tmp/vvveb_dump.sql
+
+
+# RUN mkdir -p /var/www/html/storage/sqlite && \
+#     sqlite3 /var/www/html/storage/sqlite/vvveb.db < /tmp/vvveb_dump.sql && \
+#     chown -R www-data:www-data /var/www/html/storage
+
+# EXPOSE 80
+# CMD ["php-fpm"]
+
+
+
+FROM vvveb/vvvebcms:php8.3-fpm-alpine
+
+# Set proper permissions for the web directory
+USER root
+RUN mkdir -p /var/www/html/storage/logs \
+    && mkdir -p /var/www/html/public/admin \
+    && mkdir -p /var/www/html/public/vadmin \
+    && mkdir -p /var/www/html/config \
+    && mkdir -p /var/www/html/data/sqlite \
+    && chown -R nobody:nobody /var/www/html \
+    && chmod -R 777 /var/www/html
+
+# Switch back to the non-root user
+USER nobodys

@@ -1,0 +1,10 @@
+FROM mysql:latest
+
+ENV MYSQL_ROOT_PASSWORD=vvveb
+ENV MYSQL_DATABASE=vvveb
+ENV MYSQL_USER=vvveb
+ENV MYSQL_PASSWORD=vvveb
+
+COPY backup_database.sql /docker-entrypoint-initdb.d/
+
+EXPOSE 3306
